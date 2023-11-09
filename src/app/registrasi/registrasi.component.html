@@ -1,0 +1,431 @@
+<app-header></app-header>
+<div class="wrapper">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="content">
+      <div class="mb-4">
+        <button class="btn btn-outline-info btn-sm">
+          <i class="icon icon-back mr-2"></i>
+          Back
+        </button>
+      </div>
+
+      <div class="d-flex justify-content-between my-4">
+        <h3>Formulir Permohonan Kartu Induk Kesenian</h3>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4 mb-3">
+          <div class="wrapper-step">
+            <ul class="StepProgress">
+              <li
+                class="StepProgress-item"
+                [ngClass]="
+                  tabActive == 'general' ||
+                  tabActive == 'data_organisasi' ||
+                  tabActive == 'data_anggota' ||
+                  tabActive == 'interior' ||
+                  tabActive == 'exterior' ||
+                  tabActive == 'photo' ||
+                  tabActive == 'publish'
+                    ? 'is-done'
+                    : ''
+                "
+              >
+                <strong>Perhatian</strong>
+                <i class="icon-step icon-info"></i>
+              </li>
+              <li
+                class="StepProgress-item"
+                [ngClass]="
+                  tabActive == 'data_organisasi' ||
+                  tabActive == 'data_anggota' ||
+                  tabActive == 'interior' ||
+                  tabActive == 'exterior' ||
+                  tabActive == 'photo' ||
+                  tabActive == 'publish'
+                    ? 'is-done'
+                    : ''
+                "
+              >
+                <strong>Data Organisasi</strong>
+                <i class="icon-step icon-location"></i>
+              </li>
+              <li
+                class="StepProgress-item"
+                [ngClass]="
+                  tabActive == 'data_anggota' ||
+                  tabActive == 'interior' ||
+                  tabActive == 'exterior' ||
+                  tabActive == 'photo' ||
+                  tabActive == 'publish'
+                    ? 'is-done'
+                    : ''
+                "
+              >
+                <strong>Data Anggota</strong>
+                <i class="icon-step icon-price"></i>
+              </li>
+              <li
+                class="StepProgress-item"
+                [ngClass]="
+                  tabActive == 'interior' ||
+                  tabActive == 'exterior' ||
+                  tabActive == 'photo' ||
+                  tabActive == 'publish'
+                    ? 'is-done'
+                    : ''
+                "
+              >
+                <strong>Inventaris Barang</strong>
+                <i class="icon-step icon-interior"></i>
+              </li>
+              <li
+                class="StepProgress-item"
+                [ngClass]="
+                  tabActive == 'exterior' ||
+                  tabActive == 'photo' ||
+                  tabActive == 'publish'
+                    ? 'is-done'
+                    : ''
+                "
+              >
+                <strong>Dokumen Pendukung</strong>
+                <i class="icon-step icon-house"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-8 mb-3">
+          <ng-container *ngIf="tabActive == 'general'">
+            <div class="card-border general">
+              <h3>Perhatian</h3>
+              <!-- <div class="sub mb-4">Select ......</div> -->
+
+              <p class="title">
+                Anda akan melakukan pendaftaran kartu induk kesenian Banyuwangi
+              </p>
+
+              <p>
+                Mohon isi data dengan benar dan sesuai dengan jenis kesenian
+                yang anda miliki. Klik selanjutnya untuk mulai mengisi formulir
+                pendaftaran ...
+              </p>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="tabActive == 'data_organisasi'">
+            <div class="card-border">
+              <h3>Data Organisasi</h3>
+              <p>Isi data organisasi anda:</p>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="nama">Nama Organisasi</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="Nama"
+                      placeholder="Nama"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="tanggal-berdiri">Tanggal Berdiri</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="tanggal-berdiri"
+                      placeholder="Tanggal Berdiri"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="jenis_kesenian">Jenis Kesenian</label>
+                    <select
+                      name="jenis_kesenian"
+                      id="jenis_kesenian"
+                      class="form-control"
+                    >
+                      <option value="">Seni</option>
+                      <option value="">Atraksi</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="jumlah_anggota">Jumlah Anggota</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="jumlah_anggota"
+                      placeholder="Jumlah Anggota"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-lg-12 general">
+                  <hr />
+                  <br />
+
+                  <p class="sub">Alamat Sekretariat Organisasi</p>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="kabupaten">Kabupaten</label>
+                    <select
+                      name="kabupaten"
+                      id="kabupaten"
+                      class="form-control"
+                    >
+                      <option value="">Banyuwangi</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="kecamatan">Kecamatan</label>
+                    <select
+                      name="kecamatan"
+                      id="kecamatan"
+                      class="form-control"
+                    >
+                      <option value="">Gambiran</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="desa">Desa</label>
+                    <select name="desa" id="desa" class="form-control">
+                      <option value="">Wringin Rejo</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="alamat">Alamat detail</label>
+                    <textarea
+                      class="form-control"
+                      name="alamat"
+                      id="alamat"
+                      cols="30"
+                      rows="10"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="tabActive == 'data_anggota'">
+            <div class="card-border">
+              <h3>Data Anggota</h3>
+              <p>
+                Masukkan data anggota dalam organisasi anda. ( Data Pengurus
+                Ketua dan Sekretaris Wajib di isi )
+              </p>
+
+              <div class="row">
+                <div class="col-lg-12 mb-3">
+                  <button class="btn btn-info btn-sm" (click)="addAnggota()">
+                    Tambah Anggota
+                  </button>
+                </div>
+
+                <div class="col-lg-12">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <td>No</td>
+                        <td>Nama</td>
+                        <td>L/P</td>
+                        <td>Umur</td>
+                        <td>Pekerjaan</td>
+                        <td>Alamat</td>
+                        <td>Jabatan</td>
+                        <td>Action</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>Edi Siswanto</td>
+                        <td>L</td>
+                        <td>24</td>
+                        <td>Wiraswasta</td>
+                        <td>Banyuwangi</td>
+                        <td>Ketua</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>1</td>
+                        <td>Edi Siswanto</td>
+                        <td>L</td>
+                        <td>24</td>
+                        <td>Wiraswasta</td>
+                        <td>Banyuwangi</td>
+                        <td>Ketua</td>
+                        <td></td>
+                      </tr>
+
+                      <tr>
+                        <td>1</td>
+                        <td>Edi Siswanto</td>
+                        <td>L</td>
+                        <td>24</td>
+                        <td>Wiraswasta</td>
+                        <td>Banyuwangi</td>
+                        <td>Ketua</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="tabActive == 'interior'">
+            <div class="card-border">
+              <h3>Tambah Inventaris Barang</h3>
+              <p>More information about:</p>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="tabActive == 'exterior'">
+            <div class="card-border">
+              <h3>Upload data pendukung</h3>
+              <p>More information about:</p>
+
+              <textarea
+                name="comment"
+                id="comment"
+                class="form-control"
+                cols="30"
+                rows="10"
+              ></textarea>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="tabActive == 'photo'">
+            <div class="card-border">
+              <h3>Add Photos</h3>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <ng-container>
+                    <div
+                      class="container-upload"
+                      appDnd
+                      (fileDropped)="onFileDropped($event)"
+                    >
+                      <input
+                        type="file"
+                        #fileDropRef
+                        id="fileDropRef"
+                        multiple
+                        (change)="fileBrowseHandler($event)"
+                      />
+
+                      <img
+                        class="mb-3"
+                        src="/assets/img/upload-image-icon.svg"
+                        alt=""
+                      />
+
+                      <div class="d-flex justify-content-center">
+                        <h3>
+                          Click to upload
+                          <span>or drag and drop SVG, PNG or JPG</span>
+                        </h3>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="tabActive == 'publish'">
+            <div class="card-border">
+              <h3 class="mb-4">Publishing</h3>
+
+              <p>Preview your add</p>
+
+              <div class="card-post mb-3">
+                <div class="image">
+                  <img src="/assets/img/advertise-1.png" alt="image" />
+                </div>
+
+                <div class="content-post">
+                  <div class="text-right line-height-0">
+                    <a type="button">
+                      <!-- <fa-icon class="color-theme" [icon]="faHeart"></fa-icon> -->
+                      <fa-icon [icon]="faEllipsisH"></fa-icon>
+                    </a>
+                  </div>
+
+                  <div class="subtitle">
+                    <div class="price">
+                      <span class="number">$5,000</span>
+                      <span class="text"> &bull; $3,000 per m2</span>
+                    </div>
+                  </div>
+
+                  <div class="title">Como fazer transfe rencia</div>
+
+                  <div class="location">
+                    <fa-icon [icon]="faLocation"></fa-icon>
+                    1995 Broadway, New York
+                  </div>
+
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur. Nulla pharetra morbi
+                    risus nec odio nibh. Tortor orci vitae aliquet vestibulum
+                    tincidunt. Viverra leo feugiat quis enim libero pretium.
+                    Aliquet egestas sed mattis sed massa purus. Vivamus et dui
+                    ornare fames sed.
+                  </p>
+
+                  <div class="category">
+                    <span> Commercial </span>
+                    <span> Lease commercial </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-content">
+      <button class="btn btn-icon px-3 btn-sm mr-3" (click)="prev(tabActive)">
+        <i class="icon icon-arrow-left"></i>
+      </button>
+
+      <button class="btn btn-info btn-sm" (click)="next(tabActive)">
+        <ng-container *ngIf="tabActive == 'publish'">
+          <span> Kirim </span>
+        </ng-container>
+
+        <ng-container *ngIf="tabActive != 'publish'">
+          <span> Selanjutnya </span>
+        </ng-container>
+        <i class="icon icon-arrow-right ml-2"></i>
+      </button>
+    </div>
+  </div>
+</div>

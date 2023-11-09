@@ -1,0 +1,17 @@
+:root {
+  --white: #fdfdfd;
+  --black: #36393c;
+  --darkGray: #6f6e81;
+  --lightGray: #b6bec9;
+  --blue: #3b85ac;
+  --gray: #6d8aa1;
+  --red: #fe6f5e;
+}
+
+$white: var(--white);
+$black: var(--black);
+$dark-gray: var(--darkGray);
+$light-gray: var(--lightGray);
+$blue: var(--blue);
+$gray: var(--gray);
+$red: var(--red);

@@ -1,0 +1,115 @@
+<div class="modal-content">
+  <form class="theme-form">
+    <div class="modal-header">
+      <h5 class="modal-title">Tambah Anggota</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ng-container>
+        <div class="box">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="nama" class="form-label"> Nama </label>
+
+                <input
+                  id="nama"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter"
+                />
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="jenis_kelamin" class="form-label">
+                  Jenis Kelamin
+                </label>
+
+                <select
+                  name="jenis_kelamin"
+                  id="jenis_kelamin"
+                  class="form-control"
+                >
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="umur" class="form-label"> Umur </label>
+
+                <input
+                  id="umur"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter"
+                />
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="pekerjaan" class="form-label"> Pekerjaan </label>
+
+                <select name="pekerjaan" id="pekerjaan" class="form-control">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="jabatan" class="form-label"> Jabatan </label>
+
+                <select name="jabatan" id="jabatan" class="form-control">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="alamat" class="form-label"> Alamat </label>
+
+                <textarea
+                  name="alamat"
+                  id=""
+                  class="form-control"
+                  cols="30"
+                  rows="10"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-primary width-100"
+        data-dismiss="modal"
+        (click)="close()"
+      >
+        CANCEL
+      </button>
+      <button type="button" class="btn btn-primary width-100" (click)="save()">
+        SAVE
+      </button>
+    </div>
+  </form>
+</div>
+
+<ng-container *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>

@@ -1,1 +1,369 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap");
+
+@import "./theme/variables";
+
+body {
+  background-color: #f6f7f8;
+  color: $black;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+}
+
+.container-fluid {
+  padding-left: 70px;
+  padding-right: 70px;
+}
+
+@media (max-width: 1336px) {
+  .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.text-bold {
+  font-weight: 600;
+}
+
+.text-error {
+  font-weight: bold;
+  color: $red;
+}
+
+.text-danger {
+  color: $red !important;
+}
+
+.color-theme {
+  color: $blue;
+}
+
+::placeholder {
+  color: $light-gray !important;
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: $light-gray !important;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+::-ms-input-placeholder {
+  color: $light-gray !important;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.btn-info,
+.btn-outline-info,
+.btn-outline-danger {
+  font-size: 16px;
+  font-weight: 700;
+  height: 52px;
+  border-radius: 8px;
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid $blue;
+  padding: 0.5rem 1.5rem;
+}
+
+.btn-info {
+  background-color: $blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    margin-left: 6px;
+  }
+
+  &:hover,
+  &:active {
+    background-color: $blue;
+    border: 1px solid $blue;
+  }
+
+  &:disabled {
+    background-color: $light-gray;
+    border: 1px solid $light-gray;
+  }
+}
+
+.btn-outline-info {
+  color: $blue;
+  border: 1px solid $blue;
+
+  &:hover,
+  &:active {
+    background-color: $blue;
+    border: 1px solid $blue;
+  }
+
+  &:disabled {
+    color: $light-gray;
+    border: 1px solid $light-gray;
+  }
+}
+
+.btn-outline-danger {
+  color: $red;
+  border: 1px solid $red;
+
+  &:hover {
+    background-color: $red;
+  }
+
+  &:disabled {
+    color: $light-gray;
+    border: 1px solid $light-gray;
+  }
+}
+
+.btn-icon {
+  display: inline-flex;
+  color: $blue;
+  font-size: 14px;
+  font-weight: 700;
+
+  &:hover {
+    color: $blue;
+  }
+
+  i {
+    margin-right: 6px;
+  }
+}
+
+.btn-sm {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 24px;
+  color: $black;
+  font-weight: 400;
+}
+
+.form {
+  width: 100%;
+
+  label {
+    font-weight: 400;
+    font-size: 12px;
+    color: $gray;
+
+    span {
+      margin-left: 6px;
+    }
+  }
+
+  .form-control {
+    border-radius: 8px;
+    border: 1px solid $light-gray;
+    outline: none;
+    box-shadow: none;
+
+    &:focus {
+      border: 1px solid $blue;
+    }
+  }
+
+  .form-group {
+    a {
+      cursor: pointer;
+      width: 100%;
+      text-align: right;
+      color: $blue;
+      font-weight: 400;
+      font-size: 10px;
+      text-decoration: underline;
+
+      &:hover {
+        color: $blue;
+      }
+    }
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+select {
+  appearance: none;
+  background: url(/assets/img/chevron-down.svg) no-repeat right transparent;
+  -webkit-appearance: none;
+  background-position-x: calc(100% - 15px);
+  padding-right: 40px !important;
+
+  color: $light-gray !important;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  background-size: 18px 18px;
+  background-position: center right;
+  background-repeat: no-repeat;
+  display: inline-block;
+  color: #fff;
+
+  &.icon-user {
+    background-image: url("/assets/img/user-icon.svg");
+  }
+
+  &.icon-back {
+    background-image: url("/assets/img/back-icon.svg");
+  }
+
+  &.icon-arrow-right {
+    background-image: url("/assets/img/arrow-long-right-icon.svg");
+  }
+
+  &.icon-arrow-left {
+    background-image: url("/assets/img/arrow-long-left-icon.svg");
+  }
+
+  &.icon-heart {
+    background-image: url("/assets/img/heart-icon.svg");
+  }
+}
+
+button:hover {
+  .icon-back {
+    background-image: url("/assets/img/back-white-icon.svg");
+  }
+}
+
+.navbar-toggler-icon {
+  background-image: url("/assets/img/menu-icon.svg");
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background-size: 30px 24px;
+  background-position: center right;
+  background-repeat: no-repeat;
+  display: inline-block;
+  color: $black;
+}
+
+.maps {
+  .map-responsive {
+    box-shadow: 0px 4px 26px 0px #00000014;
+    border-radius: 8px;
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+  }
+
+  .map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+}
+
+.card-theme {
+  box-shadow: 0px 28px 28px 0px #c2c2c20d;
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid #eaf1f5;
+  background-color: $white;
+
+  p {
+    color: $gray;
+    line-height: 22px;
+    font-size: 16px;
+  }
+}
+
+.list-information {
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+
+    .label {
+      width: 200px;
+      color: $gray;
+    }
+
+    .value {
+      flex: 1;
+      color: $black;
+    }
+  }
+}
+
+.tag {
+  display: flex;
+  flex-wrap: wrap;
+
+  .label {
+    padding: 10px;
+    border: 1px solid $light-gray;
+    border-radius: 8px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    color: $gray;
+  }
+}
+
+.main-content {
+  margin-left: 6.5rem;
+
+  .content {
+    background-color: #f6f7f8;
+    padding: 2rem;
+    min-height: calc(100vh - 98px);
+  }
+}
+
+.modal-sm {
+  .modal-content {
+    width: 360px !important;
+    border: none;
+    border-radius: 8px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .main-content {
+    margin-left: 17rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
