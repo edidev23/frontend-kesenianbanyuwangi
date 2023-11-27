@@ -320,7 +320,7 @@ export class RegistrasiComponent implements OnInit {
 
         console.log(res);
 
-        if (res && res.data) {
+        if (res && res.data && !res.data.status) {
           this.organisasi = res.data;
           this.getAnggota(this.organisasi.id);
 
@@ -367,6 +367,22 @@ export class RegistrasiComponent implements OnInit {
           }
           if (dataOrganisasi.jenis_kesenian) {
             this.selectJenisKesenian();
+          }
+        } else if (res && res.data && res.data.status) {
+          if (res.data.status == 'Allow') {
+            alert(
+              'pendaftaran berhasil, sistem akan menampilkan kartu induk kesenian'
+            );
+
+            this.router.navigateByUrl('homepage');
+          } else if (res.data.status == 'Denny') {
+            alert('pendaftaran ditolak, data tidak valid');
+
+            this.router.navigateByUrl('homepage');
+          } else if (res.data.status == 'Request') {
+            alert('pendaftaran masih dalam proses validasi');
+
+            this.router.navigateByUrl('homepage');
           }
         }
       },

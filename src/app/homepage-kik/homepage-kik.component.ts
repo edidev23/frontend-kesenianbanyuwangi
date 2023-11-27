@@ -1,27 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  faBullhorn,
-  faCog,
-  faEnvelope,
-  faHeart,
-  faListAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import { ApiService } from 'src/app/api.service';
-import { AuthService } from 'src/app/auth/auth.service';
+import { ApiService } from '../api.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
+  selector: 'app-homepage-kik',
+  templateUrl: './homepage-kik.component.html',
+  styleUrls: ['./homepage-kik.component.scss'],
 })
-export class SidebarComponent implements OnInit {
-  faSetting = faCog;
-  faList = faListAlt;
-  faHeart = faHeart;
-  faMail = faEnvelope;
-  faNotice = faBullhorn;
-
+export class HomepageKikComponent implements OnInit {
   userID: string;
   role: string;
 
@@ -46,7 +33,9 @@ export class SidebarComponent implements OnInit {
       if (this.userID) {
         this.role = dataStorage.role;
 
-        this.getData();
+        if (this.role == 'user-kik') {
+          this.getData();
+        }
       }
     }
   }
@@ -62,6 +51,10 @@ export class SidebarComponent implements OnInit {
 
         if (res && res.data) {
           this.organisasi = res.data;
+
+          if (this.organisasi && !this.organisasi.status) {
+            this.router.navigateByUrl('/registrasi');
+          }
         }
       },
       (error) => {

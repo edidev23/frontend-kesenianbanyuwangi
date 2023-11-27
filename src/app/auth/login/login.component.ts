@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     let resp = await this.authService.getToken();
 
     if (resp) {
-      this.router.navigateByUrl('/registrasi');
+      this.router.navigateByUrl('/homepage');
     }
   }
 
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
           this.isLoading = false;
           let resp = await this.authService.getToken(res.data);
           if (resp.role == 'user-kik') {
-            this.router.navigateByUrl('/registrasi');
+            this.router.navigateByUrl('/homepage');
           } else {
             localStorage.removeItem('expired');
             localStorage.removeItem('token');
