@@ -1,0 +1,28 @@
+@import "../../../theme/variables";
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.btn-info {
+  background-color: $blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    margin-left: 6px;
+  }
+
+  &:hover,
+  &:active {
+    background-color: $blue;
+    border: 1px solid $blue;
+  }
+
+  &:disabled {
+    background-color: $light-gray;
+    border: 1px solid $light-gray;
+  }
+}

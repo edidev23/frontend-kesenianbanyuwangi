@@ -364,8 +364,8 @@ small {
 
 .container-upload {
   width: 100%;
-  height: 168px;
-  padding: 2rem;
+  height: 200px;
+  padding: 10px;
   text-align: center;
   border: solid 1px $light-gray;
   border-radius: 8px;
@@ -390,6 +390,24 @@ small {
     span {
       color: $light-gray;
     }
+  }
+
+  .relative {
+    position: relative;
+    height: 180px;
+
+    .icon-delete {
+      position: absolute;
+      right: 6px;
+      cursor: pointer;
+      color: $gray;
+    }
+  }
+
+  .img-upload {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 }
 
@@ -477,6 +495,58 @@ small {
       margin-bottom: 8px;
     }
   }
+}
+
+a {
+  cursor: pointer;
+}
+
+
+.preview-image {
+  .image-thumbnails {
+    // max-height: 100px;
+    width: 100%;
+    height: 200px;
+    position: relative;
+
+    img {
+      object-fit: cover;
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.icon-delete {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: white;
+  background: #ffffff85;
+  padding: 0px 6px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.icon-add {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid $blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  fa-icon {
+    color: $blue;
+    font-size: 30px;
+  }
+}
+
+.minheight-200 {
+  min-height: 200px;
 }
 
 @media (max-width: 750px) {

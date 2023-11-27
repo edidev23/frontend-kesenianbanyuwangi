@@ -7,6 +7,7 @@ import {
   faHeart,
   faListAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,7 +21,23 @@ export class SidebarComponent implements OnInit {
   faMail = faEnvelope;
   faNotice = faBullhorn;
 
-  constructor(private router: Router) {}
+  userID: string;
+  role: string;
 
-  ngOnInit(): void {}
+  constructor(private router: Router, private authService: AuthService) {}
+
+  async ngOnInit(): Promise<void> {
+    let resp = await this.authService.getToken();
+
+    if (!resp) {
+      this.router.navigateByUrl('/login');
+    } else {
+      let dataStorage = JSON.parse(localStorage.getItem('users'));
+      this.userID = dataStorage ? dataStorage.id : '';
+
+      if (this.userID) {
+        this.role = dataStorage.role;
+      }
+    }
+  }
 }

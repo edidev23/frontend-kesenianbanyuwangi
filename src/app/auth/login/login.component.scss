@@ -1,0 +1,221 @@
+@import "../../../theme/variables";
+
+.container-fluid {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.link-term {
+  font-size: 14px;
+  color: $gray;
+}
+
+.bg-login {
+  background-color: $blue;
+  padding: 50px 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  min-height: 800px;
+  z-index: -1;
+  color: $white;
+
+  .bg-image {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    // background-image: url("/assets/img/bg-login.png");
+    background-repeat: no-repeat;
+    background-position: top;
+  }
+
+  .logo {
+    width: 80px;
+    position: absolute;
+    z-index: 1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  h3 {
+    color: $white;
+    margin-bottom: 30px;
+  }
+}
+
+.login-form {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+  .margin-100 {
+    margin-top: 200px;
+  }
+
+  .box {
+    width: 100%;
+    height: 100%;
+    max-width: 360px;
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    .form {
+      margin-top: 20px;
+    }
+
+    h3 {
+      font-size: 28px;
+      font-weight: 600;
+      color: $black;
+    }
+
+    p {
+      margin-bottom: 0;
+      color: $gray;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .link {
+      font-size: 10px;
+    }
+
+    .form-code {
+      display: flex;
+      flex: row;
+      margin-left: -8px;
+      margin-right: -8px;
+
+      input {
+        margin: 0 8px;
+        text-indent: 20%;
+      }
+    }
+
+    .relative {
+      position: relative;
+
+      span {
+        &.icon {
+          position: absolute;
+          right: 15px;
+          top: 42px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .list-password {
+      padding-left: 20px;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+
+    .link-bottom {
+      font-size: 12px;
+      font-weight: 500;
+
+      a {
+        color: $blue;
+        cursor: pointer;
+        text-decoration: underline;
+        font-weight: 600;
+
+        &:hover {
+          color: $blue;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .resend-code {
+      color: $blue;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+
+      .link {
+        color: $gray;
+      }
+
+      .button {
+        color: $blue;
+        text-decoration: underline;
+      }
+
+      .w-time {
+        min-width: 40px;
+      }
+    }
+
+    .button {
+      cursor: pointer;
+    }
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.list-password {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0 !important;
+
+  li {
+    color: $gray;
+  }
+}
+
+.error {
+  color: $red !important;
+}
+
+.btn-info,
+.btn-outline-info,
+.btn-outline-danger {
+  font-size: 14px;
+  height: 36px;
+}
+
+::placeholder {
+  font-size: 12px;
+}
+
+:-ms-input-placeholder {
+  font-size: 12px;
+}
+
+::-ms-input-placeholder {
+  font-size: 12px;
+}
+
+.text-error {
+  color: $red !important;
+}
+
+@media (max-width: 500px) {
+  .bg-login {
+    padding: 50px 20px;
+  }
+
+  .form-code {
+    input {
+      margin: 0 3px !important;
+      text-indent: 20% !important;
+    }
+  }
+}

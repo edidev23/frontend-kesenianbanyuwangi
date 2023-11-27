@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LayoutsModule } from '../admin/layouts/layouts.module';
 import { ModalAnggotaComponent } from './modal-anggota/modal-anggota.component';
 import { ModalInventarisComponent } from './modal-inventaris/modal-inventaris.component';
+import { UtilsModule } from '../utils/utils.module';
 
 const routes: Routes = [
   {
@@ -15,12 +16,11 @@ const routes: Routes = [
   },
 ];
 
-
 @NgModule({
   declarations: [
     RegistrasiComponent,
     ModalAnggotaComponent,
-    ModalInventarisComponent
+    ModalInventarisComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +29,8 @@ const routes: Routes = [
     LayoutsModule,
     FormsModule,
     ReactiveFormsModule,
-  ]
+    UtilsModule
+  ],
+  exports: [ModalAnggotaComponent, ModalInventarisComponent],
 })
-export class RegistrasiModule { }
+export class RegistrasiModule {}

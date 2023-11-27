@@ -11,45 +11,48 @@
   </div>
 
   <ul id="accordionSidebar" class="navbar-nav sidebar">
-    <li class="nav-item">
-      <a
-        routerLink="/admin/messages"
-        class="nav-link"
-        routerLinkActive="active"
-      >
+    <li class="nav-item" *ngIf="role == 'user-kik'">
+      <a routerLink="/registrasi" class="nav-link" routerLinkActive="active">
         <fa-icon [icon]="faMail"></fa-icon>
 
         <span>Dashboard</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a routerLink="/admin/account" class="nav-link" routerLinkActive="active">
-        <fa-icon [icon]="faSetting"></fa-icon>
 
-        <span>Data Organisasi</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        routerLink="/admin/my-listings"
-        class="nav-link"
-        routerLinkActive="active"
-      >
-        <fa-icon [icon]="faList"></fa-icon>
+    <ng-container *ngIf="role == 'admin'">
+      <li class="nav-item">
+        <a
+          routerLink="/admin/account"
+          class="nav-link"
+          routerLinkActive="active"
+        >
+          <fa-icon [icon]="faSetting"></fa-icon>
 
-        <span>Data Anggota</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        routerLink="/admin/liked-listings"
-        class="nav-link"
-        routerLinkActive="active"
-      >
-        <fa-icon [icon]="faHeart"></fa-icon>
+          <span>Data Organisasi</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          routerLink="/admin/my-listings"
+          class="nav-link"
+          routerLinkActive="active"
+        >
+          <fa-icon [icon]="faList"></fa-icon>
 
-        <span>Data Inventaris Barang</span>
-      </a>
-    </li>
+          <span>Data Anggota</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          routerLink="/admin/liked-listings"
+          class="nav-link"
+          routerLinkActive="active"
+        >
+          <fa-icon [icon]="faHeart"></fa-icon>
+
+          <span>Data Inventaris Barang</span>
+        </a>
+      </li>
+    </ng-container>
   </ul>
 </div>

@@ -5,9 +5,9 @@
   <div class="main-content">
     <div class="content">
       <div class="mb-4">
-        <button class="btn btn-outline-info btn-sm">
+        <button (click)="prev(tabActive)" class="btn btn-outline-info btn-sm">
           <i class="icon icon-back mr-2"></i>
-          Back
+          Kembali
         </button>
       </div>
 
@@ -25,8 +25,8 @@
                   tabActive == 'general' ||
                   tabActive == 'data_organisasi' ||
                   tabActive == 'data_anggota' ||
-                  tabActive == 'interior' ||
-                  tabActive == 'exterior' ||
+                  tabActive == 'data_inventaris' ||
+                  tabActive == 'data_pendukung' ||
                   tabActive == 'photo' ||
                   tabActive == 'publish'
                     ? 'is-done'
@@ -41,8 +41,8 @@
                 [ngClass]="
                   tabActive == 'data_organisasi' ||
                   tabActive == 'data_anggota' ||
-                  tabActive == 'interior' ||
-                  tabActive == 'exterior' ||
+                  tabActive == 'data_inventaris' ||
+                  tabActive == 'data_pendukung' ||
                   tabActive == 'photo' ||
                   tabActive == 'publish'
                     ? 'is-done'
@@ -56,8 +56,8 @@
                 class="StepProgress-item"
                 [ngClass]="
                   tabActive == 'data_anggota' ||
-                  tabActive == 'interior' ||
-                  tabActive == 'exterior' ||
+                  tabActive == 'data_inventaris' ||
+                  tabActive == 'data_pendukung' ||
                   tabActive == 'photo' ||
                   tabActive == 'publish'
                     ? 'is-done'
@@ -70,8 +70,8 @@
               <li
                 class="StepProgress-item"
                 [ngClass]="
-                  tabActive == 'interior' ||
-                  tabActive == 'exterior' ||
+                  tabActive == 'data_inventaris' ||
+                  tabActive == 'data_pendukung' ||
                   tabActive == 'photo' ||
                   tabActive == 'publish'
                     ? 'is-done'
@@ -84,7 +84,7 @@
               <li
                 class="StepProgress-item"
                 [ngClass]="
-                  tabActive == 'exterior' ||
+                  tabActive == 'data_pendukung' ||
                   tabActive == 'photo' ||
                   tabActive == 'publish'
                     ? 'is-done'
@@ -120,126 +120,177 @@
               <h3>Data Organisasi</h3>
               <p>Isi data organisasi anda:</p>
 
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="nama">Nama Organisasi</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Nama"
-                      placeholder="Nama"
-                    />
+              <form [formGroup]="organisasiForm" class="form">
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div class="form-group">
+                      <label for="nama">Nama Organisasi</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Nama"
+                        placeholder="Nama"
+                        formControlName="nama"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="tanggal-berdiri">Tanggal Berdiri</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="tanggal-berdiri"
+                        formControlName="tanggal_berdiri"
+                        placeholder="Tanggal Berdiri"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="jenis_kesenian">Jenis Kesenian</label>
+                      <select
+                        name="jenis_kesenian"
+                        id="jenis_kesenian"
+                        class="form-control"
+                        formControlName="jenis_kesenian"
+                        (change)="selectJenisKesenian()"
+                      >
+                        <option value="">Pilih</option>
+                        <option
+                          [value]="item.id"
+                          *ngFor="let item of jenisKesenian"
+                        >
+                          {{ item.nama }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="sub_kesenian">Sub Kesenian</label>
+                      <select
+                        name="sub_kesenian"
+                        id="sub_kesenian"
+                        class="form-control"
+                        formControlName="sub_kesenian"
+                      >
+                        <option value="">Pilih</option>
+                        <option
+                          [value]="item.id"
+                          *ngFor="let item of subKesenian"
+                        >
+                          {{ item.nama }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="jumlah_anggota">Jumlah Anggota</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="jumlah_anggota"
+                        placeholder="Jumlah Anggota"
+                        formControlName="jumlah_anggota"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12 general">
+                    <hr />
+                    <br />
+
+                    <p class="sub">Alamat Sekretariat Organisasi</p>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="kabupaten">Kabupaten</label>
+                      <select
+                        name="kabupaten"
+                        id="kabupaten"
+                        class="form-control"
+                        formControlName="kabupaten"
+                      >
+                        <option value="Banyuwangi">Banyuwangi</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="kecamatan">Kecamatan</label>
+                      <select
+                        name="kecamatan"
+                        id="kecamatan"
+                        class="form-control"
+                        (change)="getDesa()"
+                        formControlName="kecamatan"
+                      >
+                        <ng-container *ngFor="let item of kecamatanList">
+                          <option [value]="item.kode">{{ item.nama }}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="desa">Desa</label>
+                      <select
+                        name="desa"
+                        id="desa"
+                        class="form-control"
+                        formControlName="desa"
+                      >
+                        <ng-container *ngFor="let item of desaList">
+                          <option [value]="item.kode">{{ item.nama }}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="alamat">Alamat detail</label>
+                      <textarea
+                        class="form-control"
+                        name="alamat"
+                        id="alamat"
+                        cols="30"
+                        rows="10"
+                        formControlName="alamat"
+                      ></textarea>
+                    </div>
                   </div>
                 </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="tanggal-berdiri">Tanggal Berdiri</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="tanggal-berdiri"
-                      placeholder="Tanggal Berdiri"
-                    />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="jenis_kesenian">Jenis Kesenian</label>
-                    <select
-                      name="jenis_kesenian"
-                      id="jenis_kesenian"
-                      class="form-control"
-                    >
-                      <option value="">Seni</option>
-                      <option value="">Atraksi</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="jumlah_anggota">Jumlah Anggota</label>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="jumlah_anggota"
-                      placeholder="Jumlah Anggota"
-                    />
-                  </div>
-                </div>
-
-                <div class="col-lg-12 general">
-                  <hr />
-                  <br />
-
-                  <p class="sub">Alamat Sekretariat Organisasi</p>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="kabupaten">Kabupaten</label>
-                    <select
-                      name="kabupaten"
-                      id="kabupaten"
-                      class="form-control"
-                    >
-                      <option value="">Banyuwangi</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="kecamatan">Kecamatan</label>
-                    <select
-                      name="kecamatan"
-                      id="kecamatan"
-                      class="form-control"
-                    >
-                      <option value="">Gambiran</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="desa">Desa</label>
-                    <select name="desa" id="desa" class="form-control">
-                      <option value="">Wringin Rejo</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="alamat">Alamat detail</label>
-                    <textarea
-                      class="form-control"
-                      name="alamat"
-                      id="alamat"
-                      cols="30"
-                      rows="10"
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
+              </form>
             </div>
           </ng-container>
 
           <ng-container *ngIf="tabActive == 'data_anggota'">
             <div class="card-border">
               <h3>Data Anggota</h3>
-              <p>
-                Masukkan data anggota dalam organisasi anda. ( Data Pengurus
-                Ketua dan Sekretaris Wajib di isi )
-              </p>
+              <div class="mb-3">
+                <p class="mb-0">Masukkan data anggota dalam organisasi anda.</p>
+                <p class="mb-0 text-danger" *ngIf="checkAnggota()">
+                  ( Data Pengurus Ketua dan Sekretaris Wajib di isi )
+                </p>
+              </div>
 
               <div class="row">
                 <div class="col-lg-12 mb-3">
-                  <button class="btn btn-info btn-sm" (click)="addAnggota()">
+                  <button
+                    class="btn btn-info btn-sm"
+                    [disabled]="!organisasi"
+                    (click)="addAnggota()"
+                  >
                     Tambah Anggota
                   </button>
                 </div>
@@ -259,37 +310,37 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Edi Siswanto</td>
-                        <td>L</td>
-                        <td>24</td>
-                        <td>Wiraswasta</td>
-                        <td>Banyuwangi</td>
-                        <td>Ketua</td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>1</td>
-                        <td>Edi Siswanto</td>
-                        <td>L</td>
-                        <td>24</td>
-                        <td>Wiraswasta</td>
-                        <td>Banyuwangi</td>
-                        <td>Ketua</td>
-                        <td></td>
+                      <tr *ngFor="let item of userList; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.nama }}</td>
+                        <td>
+                          {{ item.jenis_kelamin ? item.jenis_kelamin : "-" }}
+                        </td>
+                        <td>{{ calculateAge(item.tanggal_lahir) }}</td>
+                        <td>{{ item.pekerjaan ? item.pekerjaan : "-" }}</td>
+                        <td>{{ item.alamat ? item.alamat : "-" }}</td>
+                        <td>{{ item.jabatan }}</td>
+                        <td>
+                          <a class="mr-3" (click)="editAnggota(i, item)">
+                            <fa-icon
+                              class="text-info"
+                              [icon]="faEdit"
+                            ></fa-icon>
+                          </a>
+                          <a (click)="deleteAnggota(i, item.id)">
+                            <fa-icon
+                              class="text-info"
+                              [icon]="faDelete"
+                            ></fa-icon>
+                          </a>
+                        </td>
                       </tr>
 
-                      <tr>
-                        <td>1</td>
-                        <td>Edi Siswanto</td>
-                        <td>L</td>
-                        <td>24</td>
-                        <td>Wiraswasta</td>
-                        <td>Banyuwangi</td>
-                        <td>Ketua</td>
-                        <td></td>
-                      </tr>
+                      <ng-container *ngIf="userList && userList.length == 0">
+                        <tr>
+                          <td colspan="8" align="center">Data masih kosong</td>
+                        </tr>
+                      </ng-container>
                     </tbody>
                   </table>
                 </div>
@@ -297,25 +348,280 @@
             </div>
           </ng-container>
 
-          <ng-container *ngIf="tabActive == 'interior'">
+          <ng-container *ngIf="tabActive == 'data_inventaris'">
             <div class="card-border">
-              <h3>Tambah Inventaris Barang</h3>
-              <p>More information about:</p>
+              <h3>Data Inventaris</h3>
+              <div class="mb-3">
+                <p class="mb-0">
+                  Masukkan data Inventaris dalam organisasi anda.
+                </p>
+                <p class="mb-0 text-danger" *ngIf="!checkInventaris()">
+                  ( Data Inventaris Barang yang harus di miliki minimal 10 Buah
+                  )
+                </p>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12 mb-3">
+                  <button
+                    class="btn btn-info btn-sm"
+                    [disabled]="!organisasi"
+                    (click)="addInventaris()"
+                  >
+                    Tambah Barang
+                  </button>
+                </div>
+
+                <div class="col-lg-12">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <td>No</td>
+                        <td>Nama</td>
+                        <td>Jumlah</td>
+                        <td>Pembelian TH</td>
+                        <td>Kondisi</td>
+                        <td>Action</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of inventarisList; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.nama }}</td>
+                        <td>
+                          {{ item.jumlah ? item.jumlah : "-" }}
+                        </td>
+                        <td>{{ item.pembelian_th }}</td>
+                        <td>{{ item.kondisi ? item.kondisi : "-" }}</td>
+                        <td>
+                          <a class="mr-3" (click)="editInventaris(i, item)">
+                            <fa-icon
+                              class="text-info"
+                              [icon]="faEdit"
+                            ></fa-icon>
+                          </a>
+                          <a (click)="deleteInventaris(i, item.id)">
+                            <fa-icon
+                              class="text-info"
+                              [icon]="faDelete"
+                            ></fa-icon>
+                          </a>
+                        </td>
+                      </tr>
+
+                      <ng-container
+                        *ngIf="inventarisList && inventarisList.length == 0"
+                      >
+                        <tr>
+                          <td colspan="6" align="center">Data masih kosong</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </ng-container>
 
-          <ng-container *ngIf="tabActive == 'exterior'">
+          <ng-container *ngIf="tabActive == 'data_pendukung'">
             <div class="card-border">
               <h3>Upload data pendukung</h3>
-              <p>More information about:</p>
 
-              <textarea
-                name="comment"
-                id="comment"
-                class="form-control"
-                cols="30"
-                rows="10"
-              ></textarea>
+              <div class="row" *ngIf="organisasi">
+                <div class="col-lg-12 mb-4">
+                  <div class="form-group mb-0">
+                    <label for="fotoKTP">
+                      Foto KTP <span class="text-danger">*</span>
+                    </label>
+                  </div>
+
+                  <div class="container-upload">
+                    <ng-container *ngIf="!fotoKTPPreview">
+                      <input
+                        type="file"
+                        id="fotoKTP"
+                        accept="image/*"
+                        (change)="onFileSelectedFotoKTP($event)"
+                        #fotoKTP
+                      />
+                      <img
+                        class="mt-4 mb-3"
+                        src="/assets/img/upload-image-icon.svg"
+                        alt=""
+                      />
+
+                      <div class="d-flex justify-content-center">
+                        <h3>
+                          Click to upload
+                          <span>or drag and drop SVG, PNG or JPG</span>
+                        </h3>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="fotoKTPPreview">
+                      <div class="relative">
+                        <img
+                          class="img-upload"
+                          [src]="fotoKTPPreview"
+                          alt="image"
+                        />
+                        <fa-icon
+                          (click)="deleteImage('KTP')"
+                          class="icon-delete"
+                          [icon]="faTimes"
+                        ></fa-icon>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+
+                <div class="col-lg-12 mb-4">
+                  <div class="form-group mb-0">
+                    <label for="pasFoto">
+                      PAS FOTO <span class="text-danger">*</span>
+                    </label>
+                  </div>
+
+                  <div class="container-upload">
+                    <ng-container *ngIf="!pasFotoPreview">
+                      <input
+                        type="file"
+                        id="pasFoto"
+                        accept="image/*"
+                        (change)="onFileSelectedPasFoto($event)"
+                        #pasFoto
+                      />
+                      <img
+                        class="mt-4 mb-3"
+                        src="/assets/img/upload-image-icon.svg"
+                        alt=""
+                      />
+
+                      <div class="d-flex justify-content-center">
+                        <h3>
+                          Click to upload
+                          <span>or drag and drop SVG, PNG or JPG</span>
+                        </h3>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="pasFotoPreview">
+                      <div class="relative">
+                        <img
+                          class="img-upload"
+                          [src]="pasFotoPreview"
+                          alt="image"
+                        />
+                        <fa-icon
+                          (click)="deleteImage('PAS-FOTO')"
+                          class="icon-delete"
+                          [icon]="faTimes"
+                        ></fa-icon>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+
+                <div class="col-lg-12 mb-4">
+                  <div class="form-group mb-0">
+                    <label for="fotoKTP">
+                      Banner <span class="text-danger">*</span>
+                    </label>
+                  </div>
+
+                  <div class="container-upload">
+                    <ng-container *ngIf="!bannerPreview">
+                      <input
+                        type="file"
+                        id="fotoKTP"
+                        accept="image/*"
+                        (change)="onFileSelectedBanner($event)"
+                        #fotoKTP
+                      />
+                      <img
+                        class="mt-4 mb-3"
+                        src="/assets/img/upload-image-icon.svg"
+                        alt=""
+                      />
+
+                      <div class="d-flex justify-content-center">
+                        <h3>
+                          Click to upload
+                          <span>or drag and drop SVG, PNG or JPG</span>
+                        </h3>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="bannerPreview">
+                      <div class="relative">
+                        <img
+                          class="img-upload"
+                          [src]="bannerPreview"
+                          alt="image"
+                        />
+                        <fa-icon
+                          (click)="deleteImage('BANNER')"
+                          class="icon-delete"
+                          [icon]="faTimes"
+                        ></fa-icon>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group mb-0">
+                    <label for="fotoKTP">
+                      Foto Kegiatan <span class="text-danger">*</span>
+                    </label>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="row preview-image mb-3">
+                        <ng-container
+                          *ngIf="selectedFiles && selectedFiles.length"
+                        >
+                          <div
+                            class="col-lg-4 mb-3"
+                            *ngFor="let img of selectedFiles; let i = index"
+                          >
+                            <div class="image-thumbnails">
+                              <img [src]="img" alt="" />
+                              <fa-icon
+                                class="icon-delete shadow"
+                                [icon]="faTimes"
+                                (click)="deleteImage('FOTO-KEGIATAN', i)"
+                              ></fa-icon>
+                            </div>
+                          </div>
+                        </ng-container>
+
+                        <div
+                          class="col-lg-3 d-flex justify-content-center align-items-center minheight-200"
+                        >
+                          <div
+                            class="icon-add"
+                            (click)="openFileFotokegiatan()"
+                          >
+                            <fa-icon [icon]="faPlus"></fa-icon>
+                          </div>
+                        </div>
+                      </div>
+
+                      <input
+                        style="display: none"
+                        id="fileDropRef"
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        #fotoKegiatan
+                        (change)="onFileSelectedFotokegiatan($event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </ng-container>
 
@@ -416,16 +722,62 @@
         <i class="icon icon-arrow-left"></i>
       </button>
 
-      <button class="btn btn-info btn-sm" (click)="next(tabActive)">
-        <ng-container *ngIf="tabActive == 'publish'">
-          <span> Kirim </span>
-        </ng-container>
-
-        <ng-container *ngIf="tabActive != 'publish'">
+      <ng-container *ngIf="tabActive == 'general'">
+        <button class="btn btn-info btn-sm" (click)="next(tabActive)">
           <span> Selanjutnya </span>
-        </ng-container>
-        <i class="icon icon-arrow-right ml-2"></i>
+          <i class="icon icon-arrow-right ml-2"></i>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="tabActive == 'data_organisasi'">
+        <button
+          [disabled]="organisasiForm.invalid"
+          class="btn btn-info btn-sm"
+          (click)="next(tabActive)"
+        >
+          <span> Selanjutnya </span>
+          <i class="icon icon-arrow-right ml-2"></i>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="tabActive == 'data_anggota'">
+        <button
+          [disabled]="checkAnggota()"
+          class="btn btn-info btn-sm"
+          (click)="next(tabActive)"
+        >
+          <span> Selanjutnya </span>
+          <i class="icon icon-arrow-right ml-2"></i>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="tabActive == 'data_inventaris'">
+        <button
+          [disabled]="!checkInventaris()"
+          class="btn btn-info btn-sm"
+          (click)="next(tabActive)"
+        >
+          <span> Selanjutnya </span>
+          <i class="icon icon-arrow-right ml-2"></i>
+        </button>
+      </ng-container>
+
+      <button
+        [disabled]="!checkDataPendukung()"
+        class="btn btn-info btn-sm"
+        (click)="next(tabActive)"
+        *ngIf="tabActive == 'data_pendukung'"
+      >
+        <span> Kirim </span>
       </button>
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>
