@@ -1,0 +1,98 @@
+<app-header></app-header>
+<div class="wrapper">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="content pt-5">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="d-flex justify-content-between mb-3">
+            <h3 class="mb-3">Data Jenis Kesenian</h3>
+
+            <button class="btn btn-info" (click)="createJenisKesenian()">
+              Tambah
+            </button>
+          </div>
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td width="1%">No</td>
+                <td>Jenis Kesenian</td>
+                <td>Sub kesenian</td>
+                <td>Action</td>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container
+                *ngFor="let item of dataJenisKesenian; let i = index"
+              >
+                <tr>
+                  <td>{{ i + 1 }}</td>
+
+                  <td>
+                    {{ item.nama }}
+                  </td>
+
+                  <td>-- PARENT --</td>
+
+                  <td>
+                    <button
+                      class="btn text-info"
+                      (click)="editJenisKesenian(i, item)"
+                    >
+                      <fa-icon [icon]="faPencil"></fa-icon>
+                    </button>
+                    <button
+                      class="btn text-danger"
+                      [disabled]="item.sub && item.sub.length"
+                      (click)="deleteJenisKesenian(i, item.id)"
+                    >
+                      <fa-icon [icon]="faDelete"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+
+                <ng-container *ngFor="let subItem of item.sub; let i = index">
+                  <tr>
+                    <td></td>
+
+                    <td></td>
+
+                    <td>
+                      {{ subItem.nama }}
+                    </td>
+
+                    <td>
+                      <button
+                        class="btn text-info mr-1"
+                        (click)="editJenisKesenian(i, item, subItem)"
+                      >
+                        <fa-icon [icon]="faPencil"></fa-icon>
+                      </button>
+
+                      <button
+                        class="btn text-danger"
+                        (click)="deleteJenisKesenian(i, subItem.id)"
+                      >
+                        <fa-icon [icon]="faDelete"></fa-icon>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>

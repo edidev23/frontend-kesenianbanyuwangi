@@ -17,6 +17,18 @@ const routes: Routes = [
     loadChildren: () =>
       import('./registrasi/registrasi.module').then((m) => m.RegistrasiModule),
   },
+  {
+    path: 'admin/homepage',
+    loadChildren: () =>
+      import('./admin/homepage/homepage.module').then((m) => m.HomepageModule),
+  },
+  {
+    path: 'admin/jenis-kesenian',
+    loadChildren: () =>
+      import('./admin/jenis-kesenian/jenis-kesenian.module').then(
+        (m) => m.JenisKesenianModule
+      ),
+  },
 ];
 
 @NgModule({

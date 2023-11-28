@@ -36,6 +36,8 @@ export class HomepageKikComponent implements OnInit {
 
         if (this.role == 'user-kik') {
           this.getData();
+        } else if (this.role == 'admin') {
+          this.router.navigateByUrl('admin/homepage');
         }
       }
     }

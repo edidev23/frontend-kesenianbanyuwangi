@@ -72,6 +72,8 @@ export class LoginComponent implements OnInit {
           let resp = await this.authService.getToken(res.data);
           if (resp.role == 'user-kik') {
             this.router.navigateByUrl('/homepage');
+          } else if (resp.role == 'admin') {
+            this.router.navigateByUrl('/admin/homepage');
           } else {
             localStorage.removeItem('expired');
             localStorage.removeItem('token');

@@ -28,13 +28,8 @@ export class SidebarComponent implements OnInit {
   role: string;
 
   isLoading: boolean = false;
-  organisasi: any;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private apiService: ApiService
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   async ngOnInit(): Promise<void> {
     let resp = await this.authService.getToken();
@@ -55,22 +50,6 @@ export class SidebarComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-
-    this.apiService.getOrganisasiByUser(this.userID).subscribe(
-      (res: any) => {
-        this.isLoading = false;
-
-        console.log(res);
-
-        if (res && res.data) {
-          this.organisasi = res.data;
-        }
-      },
-      (error) => {
-        this.isLoading = false;
-        console.log(error);
-      }
-    );
   }
 
   logout() {

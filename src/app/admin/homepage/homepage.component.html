@@ -1,0 +1,78 @@
+<app-header></app-header>
+<div class="wrapper">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="content pt-5">
+      <h3 class="mb-3">Data Induk Kesenian</h3>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <td>No</td>
+            <td>Nomor Induk</td>
+            <td>Nama Kesenian</td>
+            <td>Alamat</td>
+            <td>Ketua</td>
+            <td>Tgl Daftar</td>
+            <td>Status</td>
+            <td>Action</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dataKesenian; let i = index">
+            <td>{{ i + 1 }}</td>
+
+            <td align="center">
+              {{ item.nomor_induk ? item.nomor_induk : "-" }}
+            </td>
+            <td>
+              {{ item.nama }}
+            </td>
+            <td>
+              {{ item.alamat }}
+            </td>
+
+            <td>
+              {{ item.nama }}
+            </td>
+            <td>
+              {{ item.tanggal_daftar | date }}
+            </td>
+            <td>
+              <ng-container *ngIf="item.status == 'Request'">
+                <div class="badge badge-info">
+                  {{ item.status }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="item.status == 'Denny'">
+                <div class="badge badge-danger">
+                  {{ item.status }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="item.status == 'Allow'">
+                <div class="badge badge-success">
+                  {{ item.status }}
+                </div>
+              </ng-container>
+            </td>
+
+            <td>
+              <button class="btn text-info">
+                <fa-icon [icon]="faPencil"></fa-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>

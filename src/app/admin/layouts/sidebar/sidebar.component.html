@@ -22,35 +22,31 @@
     <ng-container *ngIf="role == 'admin'">
       <li class="nav-item">
         <a
-          routerLink="/admin/account"
-          class="nav-link"
-          routerLinkActive="active"
-        >
-          <fa-icon [icon]="faSetting"></fa-icon>
-
-          <span>Data Organisasi</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a
-          routerLink="/admin/my-listings"
+          routerLink="/admin/homepage"
           class="nav-link"
           routerLinkActive="active"
         >
           <fa-icon [icon]="faList"></fa-icon>
 
-          <span>Data Anggota</span>
+          <span>Data Kesenian</span>
         </a>
       </li>
       <li class="nav-item">
         <a
-          routerLink="/admin/liked-listings"
+          routerLink="/admin/jenis-kesenian"
           class="nav-link"
           routerLinkActive="active"
         >
           <fa-icon [icon]="faList"></fa-icon>
 
-          <span>Data Inventaris Barang</span>
+          <span>Data Jenis Kesenian</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin/users" class="nav-link" routerLinkActive="active">
+          <fa-icon [icon]="faList"></fa-icon>
+
+          <span>Data Users</span>
         </a>
       </li>
     </ng-container>

@@ -108,7 +108,11 @@ export class RegistrasiComponent implements OnInit {
       this.userID = dataStorage ? dataStorage.id : '';
 
       if (this.userID) {
-        this.getData();
+        if (dataStorage.role == 'user-kik') {
+          this.getData();
+        } else if (dataStorage.role == 'admin') {
+          this.router.navigateByUrl('admin/homepage');
+        }
       }
     }
   }

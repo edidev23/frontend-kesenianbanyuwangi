@@ -22,9 +22,41 @@ export class ApiService {
     });
   }
 
+  getOrganisasiList() {
+    return this.http
+      .get(environment.apiUrl + `get-organisasi-users`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   getJenisKesenian() {
     return this.http
       .get(environment.apiUrl + `jenis-kesenian`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  createJenisKesenian(data) {
+    return this.http
+      .post(environment.apiUrl + `jenis-kesenian`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  updateJenisKesenian(jenisKesenianID, data) {
+    return this.http
+      .put(environment.apiUrl + `jenis-kesenian/${jenisKesenianID}`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteJenisKesenian(jenisKesenianID) {
+    return this.http
+      .delete(environment.apiUrl + `jenis-kesenian/${jenisKesenianID}`, {
         headers: this.reqHeader,
       })
       .pipe(catchError(this.handleError));
