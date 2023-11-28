@@ -3,12 +3,89 @@
   <app-sidebar></app-sidebar>
 
   <div class="main-content">
-    <div class="content">
-      
+    <div class="content pt-5">
+      <ng-container *ngIf="organisasi && organisasi.status == 'Request'">
+        <h3>Data anda sedang dalam Verifikasi</h3>
 
-      <div class="d-flex justify-content-between my-4">
-        <h3>Kartu Induk anda telah aktif</h3>
-      </div>
+        <p>
+          Mohon ditunggu maksimal 5 hari kerja. Jika data anda belum di proses
+          dalam 5 hari, <br />
+          silahkan menghubungi admin Disbudpar Banyuwangi. <br /><br />
+
+          Terima kasih ...
+        </p>
+      </ng-container>
+      <ng-container *ngIf="organisasi && organisasi.status == 'Denny'">
+        <h3>Pendaftaran Gagal</h3>
+
+        <p>
+          Pendaftaran masih belum diterima. Data anda dinyatakan tidak valid
+          oleh admin. <br />
+          Silahkan cek kembali sesuai dengan petunjuk :
+        </p>
+
+        <table
+          class="table table-bordered"
+          *ngIf="dataVerifikasi && dataVerifikasi.length"
+        >
+          <thead>
+            <tr>
+              <td width="1%">No</td>
+              <td>Tanggal Review</td>
+              <td>Status</td>
+              <td>Keterangan</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of dataVerifikasi; let i = index">
+              <td>
+                {{ i + 1 }}
+              </td>
+              <td>
+                {{ item.tanggal_review | date : "fullDate" }}
+              </td>
+              <td>
+                <ng-container *ngIf="item.status == 'tdk_valid'">
+                  <div class="badge badge-danger">TIDAK VALID</div>
+                </ng-container>
+
+                <!-- <ng-container *ngIf="item.status == 'valid'">
+                  <div class="badge badge-success">VALID</div>
+                </ng-container> -->
+              </td>
+              <td>
+                {{ item.keterangan }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="btn btn-info" (click)="gotoRegistrasi()">
+          Perbaiki data
+        </button>
+      </ng-container>
+      <ng-container *ngIf="organisasi && organisasi.status == 'Allow'">
+        <h3>Pendaftaran Berhasil</h3>
+
+        <p>Anda telah terdaftar dalam Kartu Induk Kesenian Kab. Banyuwangi</p>
+      </ng-container>
+
+      <ng-container *ngIf="!isLoading && !organisasi">
+        <h3>Anda belum terdaftar dalam Kartu Induk Kesenian.</h3>
+
+        <p>Lakukan Pendaftaran Kartu induk kesenian</p>
+        <button class="btn btn-info" routerLink="/registrasi">
+          Daftar Sekarang
+        </button>
+      </ng-container>
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>

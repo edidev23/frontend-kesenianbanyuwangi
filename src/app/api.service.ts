@@ -142,6 +142,14 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  getVerifikasi(organisasi_id) {
+    return this.http
+      .get(environment.apiUrl + `verifikasi/${organisasi_id}`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   getWilayah(id = null) {
     return this.http
       .get(environment.apiUrl + `wilayah?id=${id}`, {

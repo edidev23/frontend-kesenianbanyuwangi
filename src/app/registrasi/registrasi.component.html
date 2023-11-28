@@ -99,19 +99,40 @@
         </div>
         <div class="col-lg-8 mb-3">
           <ng-container *ngIf="tabActive == 'general'">
-            <div class="card-border general">
-              <h3>Perhatian</h3>
+            <div class="card-border general" *ngIf="!isLoading">
               <!-- <div class="sub mb-4">Select ......</div> -->
 
-              <p class="title">
-                Anda akan melakukan pendaftaran kartu induk kesenian Banyuwangi
-              </p>
+              <ng-container *ngIf="organisasi && organisasi.status == 'Denny'">
+                <h3 class="text-danger">Data Anda belum valid</h3>
+                <p>
+                  Sebelumnya anda telah berhasil melakukan pendaftaran kartu
+                  induk. Namun Data anda masih dinyatakan tidak valid oleh
+                  admin. Silahkan lakukan perbaikan sesuai dengan petunjuk
+                  berikut ini :
+                </p>
 
-              <p>
-                Mohon isi data dengan benar dan sesuai dengan jenis kesenian
-                yang anda miliki. Klik selanjutnya untuk mulai mengisi formulir
-                pendaftaran ...
-              </p>
+                <ol *ngIf="dataVerifikasi">
+                  <li *ngFor="let item of dataVerifikasi">
+                    {{ item.keterangan }}
+                  </li>
+                </ol>
+              </ng-container>
+              <ng-container
+                *ngIf="!organisasi || (organisasi && !organisasi.status)"
+              >
+                <h3>Perhatian</h3>
+
+                <p class="title">
+                  Anda akan melakukan pendaftaran kartu induk kesenian
+                  Banyuwangi
+                </p>
+
+                <p>
+                  Mohon isi data dengan benar dan sesuai dengan jenis kesenian
+                  yang anda miliki. Klik selanjutnya untuk mulai mengisi
+                  formulir pendaftaran ...
+                </p>
+              </ng-container>
             </div>
           </ng-container>
 
@@ -765,7 +786,7 @@
       <button
         [disabled]="!checkDataPendukung()"
         class="btn btn-info btn-sm"
-        (click)="next(tabActive)"
+        (click)="updateStatus()"
         *ngIf="tabActive == 'data_pendukung'"
       >
         <span> Kirim </span>

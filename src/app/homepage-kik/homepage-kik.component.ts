@@ -14,6 +14,7 @@ export class HomepageKikComponent implements OnInit {
 
   isLoading: boolean = false;
   organisasi: any;
+  dataVerifikasi: any;
 
   constructor(
     private router: Router,
@@ -54,6 +55,16 @@ export class HomepageKikComponent implements OnInit {
 
           if (this.organisasi && !this.organisasi.status) {
             this.router.navigateByUrl('/registrasi');
+          } else {
+            this.apiService
+              .getVerifikasi(this.organisasi.id)
+              .subscribe((res: any) => {
+                if (res) {
+                  this.dataVerifikasi = res.data.filter(
+                    (i) => i.status == 'tdk_valid'
+                  );
+                }
+              });
           }
         }
       },
@@ -62,5 +73,9 @@ export class HomepageKikComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  gotoRegistrasi() {
+    this.router.navigateByUrl('/registrasi');
   }
 }

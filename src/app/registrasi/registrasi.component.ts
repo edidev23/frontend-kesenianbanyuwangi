@@ -42,6 +42,8 @@ export class RegistrasiComponent implements OnInit {
   inventarisList: any;
   listDocuments: any;
 
+  dataVerifikasi: any;
+
   public jenisKesenian: any;
   public subKesenian: any;
 
@@ -311,6 +313,19 @@ export class RegistrasiComponent implements OnInit {
       });
   }
 
+  updateStatus() {
+    this.isLoading = true;
+    let data = this.organisasiForm.value;
+    data.status = 'Request';
+    this.apiService.saveOrganisasi(data).subscribe((res) => {
+      if (res) {
+        console.log(res);
+
+        this.router.navigateByUrl('/homepage');
+      }
+    });
+  }
+
   getOrganisasi() {
     this.isLoading = true;
 
@@ -320,7 +335,7 @@ export class RegistrasiComponent implements OnInit {
 
         console.log(res);
 
-        if (res && res.data && !res.data.status) {
+        if (res && res.data) {
           this.organisasi = res.data;
           this.getAnggota(this.organisasi.id);
 
@@ -368,6 +383,10 @@ export class RegistrasiComponent implements OnInit {
           if (dataOrganisasi.jenis_kesenian) {
             this.selectJenisKesenian();
           }
+        }
+
+        if (res && res.data && !res.data.status) {
+          // belum input mungkin
         } else if (res && res.data && res.data.status) {
           if (res.data.status == 'Allow') {
             alert(
@@ -376,9 +395,17 @@ export class RegistrasiComponent implements OnInit {
 
             this.router.navigateByUrl('homepage');
           } else if (res.data.status == 'Denny') {
-            alert('pendaftaran ditolak, data tidak valid');
+            this.apiService
+              .getVerifikasi(this.organisasi.id)
+              .subscribe((res: any) => {
+                if (res) {
+                  this.dataVerifikasi = res.data.filter(
+                    (i) => i.status == 'tdk_valid'
+                  );
+                }
+              });
 
-            this.router.navigateByUrl('homepage');
+            // this.router.navigateByUrl('homepage');
           } else if (res.data.status == 'Request') {
             alert('pendaftaran masih dalam proses validasi');
 

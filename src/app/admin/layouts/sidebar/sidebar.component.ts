@@ -6,6 +6,7 @@ import {
   faEnvelope,
   faHeart,
   faListAlt,
+  faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/api.service';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -21,6 +22,7 @@ export class SidebarComponent implements OnInit {
   faHeart = faHeart;
   faMail = faEnvelope;
   faNotice = faBullhorn;
+  faLogout = faSignOutAlt;
 
   userID: string;
   role: string;
@@ -69,5 +71,13 @@ export class SidebarComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  logout() {
+    localStorage.removeItem('expired');
+    localStorage.removeItem('token');
+    localStorage.removeItem('users');
+
+    this.router.navigateByUrl('login');
   }
 }
