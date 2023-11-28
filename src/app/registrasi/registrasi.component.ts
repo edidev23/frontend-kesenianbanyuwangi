@@ -414,6 +414,10 @@ export class RegistrasiComponent implements OnInit {
         }
       },
       (error) => {
+        this.organisasiForm.controls.user_id.setValue(this.userID);
+        this.organisasiForm.controls.tanggal_daftar.setValue(
+          moment().format('YYYY-MM-DD')
+        );
         this.isLoading = false;
         console.log(error);
       }
