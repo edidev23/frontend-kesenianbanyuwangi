@@ -30,6 +30,38 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  getUsers() {
+    return this.http
+      .get(environment.apiUrl + `users`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  createUser(data) {
+    return this.http
+      .post(environment.apiUrl + `users`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  updateUser(userID, data) {
+    return this.http
+      .put(environment.apiUrl + `users/${userID}`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteUser(userID) {
+    return this.http
+      .delete(environment.apiUrl + `users/${userID}`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   getJenisKesenian() {
     return this.http
       .get(environment.apiUrl + `jenis-kesenian`, {

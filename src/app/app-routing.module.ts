@@ -29,6 +29,11 @@ const routes: Routes = [
         (m) => m.JenisKesenianModule
       ),
   },
+  {
+    path: 'admin/users',
+    loadChildren: () =>
+      import('./admin/users/users.module').then((m) => m.UsersModule),
+  },
 ];
 
 @NgModule({

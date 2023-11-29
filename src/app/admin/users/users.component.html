@@ -1,0 +1,74 @@
+<app-header></app-header>
+<div class="wrapper">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="content pt-5">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="d-flex justify-content-between mb-3">
+            <h3 class="mb-3">Data Users</h3>
+
+            <button class="btn btn-info" (click)="createUser()">Tambah</button>
+          </div>
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td width="1%">No</td>
+                <td>Nama</td>
+                <td>Email</td>
+                <td>Role</td>
+                <td>Created At</td>
+                <td>Action</td>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of dataUsers; let i = index">
+                <tr>
+                  <td>{{ i + 1 }}</td>
+
+                  <td>
+                    {{ item.name }}
+                  </td>
+                  <td>
+                    {{ item.email }}
+                  </td>
+                  <td>
+                    {{ item.role }}
+                  </td>
+                  <td>
+                    {{ item.created_at | date }}
+                  </td>
+                  <td>
+                    <button
+                      class="btn text-info mr-1"
+                      (click)="editUser(i, item)"
+                    >
+                      <fa-icon [icon]="faPencil"></fa-icon>
+                    </button>
+
+                    <button
+                      class="btn text-danger"
+                      (click)="deleteUser(i, item.id)"
+                    >
+                      <fa-icon [icon]="faDelete"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>
