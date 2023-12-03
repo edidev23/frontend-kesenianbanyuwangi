@@ -102,6 +102,14 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  getOrganisasiDetail(id) {
+    return this.http
+      .get(environment.apiUrl + `get-organisasi-detail/${id}`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   saveOrganisasi(data) {
     return this.http
       .post(environment.apiUrl + `save-organisasi-user`, data, {
@@ -209,6 +217,30 @@ export class ApiService {
   getVerifikasi(organisasi_id) {
     return this.http
       .get(environment.apiUrl + `verifikasi/${organisasi_id}`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  updateStatusPendaftaran(data) {
+    return this.http
+      .post(environment.apiUrl + `final-verifikasi`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  createVerifikasi(data) {
+    return this.http
+      .post(environment.apiUrl + `verifikasi`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  updateVerifikasi(id, data) {
+    return this.http
+      .put(environment.apiUrl + `verifikasi/${id}`, data, {
         headers: this.reqHeader,
       })
       .pipe(catchError(this.handleError));

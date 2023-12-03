@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { AuthService } from '../auth/auth.service';
+import { environment } from 'src/environments/environment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-homepage-kik',
@@ -15,6 +17,8 @@ export class HomepageKikComponent implements OnInit {
   isLoading: boolean = false;
   organisasi: any;
   dataVerifikasi: any;
+
+  dataDocuments: any;
 
   constructor(
     private router: Router,
@@ -55,6 +59,20 @@ export class HomepageKikComponent implements OnInit {
         if (res && res.data) {
           this.organisasi = res.data;
 
+          // get image photo
+          this.isLoading = true;
+          this.apiService.getDocument(this.organisasi.id).subscribe(
+            (res: any) => {
+              if (res) {
+                this.isLoading = false;
+                this.dataDocuments = res.data;
+              }
+            },
+            (error) => {
+              this.isLoading = false;
+            }
+          );
+
           if (this.organisasi && !this.organisasi.status) {
             this.router.navigateByUrl('/registrasi');
           } else {
@@ -75,6 +93,62 @@ export class HomepageKikComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  getFotoKetua() {
+    if (this.dataDocuments) {
+      let pasfoto = this.dataDocuments.find((d) => d.tipe == 'PAS-FOTO');
+
+      if (pasfoto) {
+        return `${environment.url}uploads/organisasi/${pasfoto.organisasi_id}/${pasfoto.image}`;
+      } else {
+        return '';
+      }
+    }
+  }
+
+  getTanggalBefore(date) {
+    const currentDate = moment(date);
+    const dateAfterTwoYears = currentDate.subtract(2, 'years');
+    const formattedDate = dateAfterTwoYears.format('YYYY-MM-DD');
+
+    return this.formatDate(formattedDate);
+  }
+
+  formatDate(date) {
+    const currentDate = new Date(date);
+
+    const options: any = {
+      // weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      // hour: '2-digit',
+      // minute: '2-digit',
+      // second: '2-digit',
+      // hour12: false, // Use 24-hour format
+      timeZone: 'Asia/Jakarta', // Set the time zone to Indonesia (Jakarta)
+    };
+
+    const formattedDate = currentDate.toLocaleString('id-ID', options);
+    return formattedDate;
+  }
+
+  checkExpired(date) {
+    const tanggalSekarang = moment();
+    const tanggalInput = moment(date);
+
+    if (tanggalSekarang.isBefore(tanggalInput)) {
+      return false;
+    } else {
+      // console.log(
+      //   'Tanggal sekarang lebih besar atau sama dengan tanggal yang dimasukkan.'
+      // );
+      const selisihHari = tanggalInput.diff(tanggalSekarang, 'days');
+      // console.log(`Selisih dalam hari: ${selisihHari} hari`);
+
+      return Math.abs(selisihHari);
+    }
   }
 
   gotoRegistrasi() {

@@ -87,6 +87,7 @@
 .StepProgress-item {
   position: relative;
   counter-increment: list;
+  cursor: pointer;
 
   strong {
     font-size: 16px;
@@ -282,7 +283,8 @@
     margin-bottom: 10px;
     cursor: pointer;
 
-    &.active, &:hover {
+    &.active,
+    &:hover {
       border: 1px solid $gray;
     }
 
@@ -500,7 +502,6 @@ small {
 a {
   cursor: pointer;
 }
-
 
 .preview-image {
   .image-thumbnails {

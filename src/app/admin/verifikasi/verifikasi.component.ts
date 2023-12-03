@@ -1,28 +1,29 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ModalAnggotaComponent } from './modal-anggota/modal-anggota.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from '../auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../api.service';
-import { FormBuilder, Validators } from '@angular/forms';
-import * as moment from 'moment';
+import { Validators, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   faPen,
-  faPlus,
-  faTimes,
   faTrash,
+  faTimes,
+  faPlus,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { ModalDeleteComponent } from '../utils/modal-delete/modal-delete.component';
-import { ModalInventarisComponent } from './modal-inventaris/modal-inventaris.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
+import { ApiService } from 'src/app/api.service';
+import { AuthService } from 'src/app/auth/auth.service';
+import { ModalAnggotaComponent } from 'src/app/registrasi/modal-anggota/modal-anggota.component';
+import { ModalInventarisComponent } from 'src/app/registrasi/modal-inventaris/modal-inventaris.component';
+import { ModalDeleteComponent } from 'src/app/utils/modal-delete/modal-delete.component';
+import { ModalMessageComponent } from 'src/app/utils/modal-message/modal-message.component';
 import { environment } from 'src/environments/environment';
-import { ModalMessageComponent } from '../utils/modal-message/modal-message.component';
 
 @Component({
-  selector: 'app-registrasi',
-  templateUrl: './registrasi.component.html',
-  styleUrls: ['./registrasi.component.scss'],
+  selector: 'app-verifikasi',
+  templateUrl: './verifikasi.component.html',
+  styleUrls: ['./verifikasi.component.scss'],
 })
-export class RegistrasiComponent implements OnInit {
+export class VerifikasiComponent implements OnInit {
   tabActive: string = 'general';
   files: any[] = [];
 
@@ -30,6 +31,7 @@ export class RegistrasiComponent implements OnInit {
   faDelete = faTrash;
   faTimes = faTimes;
   faPlus = faPlus;
+  faCheck = faCheck;
 
   isLoading: boolean = false;
 
@@ -63,6 +65,8 @@ export class RegistrasiComponent implements OnInit {
   @ViewChild('fotoKegiatan') fotoKegiatan!: ElementRef<HTMLInputElement>;
   selectedFiles: any = [];
 
+  dataValidation: any;
+
   organisasiForm = this.fb.group({
     id: [''],
     user_id: ['', Validators.required],
@@ -82,6 +86,19 @@ export class RegistrasiComponent implements OnInit {
     keterangan: [''],
   });
 
+  reviewForm = this.fb.group({
+    id: [''],
+    organisasi_id: [''],
+    status: ['', Validators.required],
+    tipe: [''],
+    keterangan: [''],
+    foto: [''],
+    userid_review: [''],
+    tanggal_review: [''],
+  });
+
+  organisasiID: string;
+
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
@@ -92,13 +109,6 @@ export class RegistrasiComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.activeRoute.queryParamMap.subscribe((params: any) => {
-      // this.type = params.get('type') ? params.get('type') : 'Regular';
-      this.tabActive = params.get('tabActive')
-        ? params.get('tabActive')
-        : 'general';
-    });
-
     let resp = await this.authService.getToken();
 
     if (!resp) {
@@ -109,9 +119,25 @@ export class RegistrasiComponent implements OnInit {
 
       if (this.userID) {
         if (dataStorage.role == 'user-kik') {
-          this.getData();
+          this.router.navigateByUrl('homepage');
         } else if (dataStorage.role == 'admin') {
-          this.router.navigateByUrl('admin/homepage');
+          //
+
+          this.activeRoute.paramMap.subscribe((params: any) => {
+            this.organisasiID = params.params.organisasi_id;
+
+            this.getData();
+          });
+
+          this.activeRoute.queryParamMap.subscribe((params: any) => {
+            this.tabActive = params.get('tabActive')
+              ? params.get('tabActive')
+              : 'general';
+
+            if (this.organisasiID) {
+              console.log(this.tabActive);
+            }
+          });
         }
       }
     }
@@ -133,6 +159,51 @@ export class RegistrasiComponent implements OnInit {
     });
 
     this.getOrganisasi();
+    this.getValidation();
+  }
+
+  getValidation() {
+    this.isLoading = true;
+    this.apiService.getVerifikasi(this.organisasiID).subscribe(
+      (res: any) => {
+        if (res) {
+          this.isLoading = false;
+
+          this.reviewForm.reset();
+
+          this.dataValidation = res.data;
+
+          let check = res.data.find((i) => i.tipe == this.tabActive);
+
+          console.log(check, this.tabActive);
+          console.log(this.dataValidation);
+
+          if (check) {
+            this.reviewForm.controls.id.setValue(check.id);
+            this.reviewForm.controls.status.setValue(check.status);
+            this.reviewForm.controls.keterangan.setValue(check.keterangan);
+            this.reviewForm.controls.tipe.setValue(check.tipe);
+            this.reviewForm.controls.id.setValue(check.id);
+          }
+        }
+      },
+      (error) => {
+        this.isLoading = false;
+      }
+    );
+  }
+
+  checkValidasi() {
+    let check = true;
+    if (this.dataValidation) {
+      this.dataValidation.map((item) => {
+        if (item.status == 'tdk_valid') {
+          check = false;
+        }
+      });
+    }
+
+    return check;
   }
 
   getDesa() {
@@ -272,33 +343,244 @@ export class RegistrasiComponent implements OnInit {
   }
 
   gotoLink(tab) {
-    console.log(tab);
-    this.router.navigateByUrl('registrasi?tabActive=' + tab);
-  }
-
-  gotoLinknav(tab) {
-    if (this.organisasi && this.organisasi.status) {
-      console.log(tab);
-      this.router.navigateByUrl('registrasi?tabActive=' + tab);
-    }
+    this.router.navigateByUrl(
+      `admin/verifikasi/${this.organisasiID}?tabActive=${tab}`
+    );
   }
 
   next(tab: string) {
     if (tab == 'general') {
       this.tabActive = 'data_organisasi';
+      let check = this.dataValidation
+        ? this.dataValidation.find((i) => i.tipe == this.tabActive)
+        : null;
+
+      if (check) {
+        this.reviewForm.controls.id.setValue(check.id);
+        this.reviewForm.controls.status.setValue(check.status);
+        this.reviewForm.controls.keterangan.setValue(check.keterangan);
+        this.reviewForm.controls.tipe.setValue(check.tipe);
+        this.reviewForm.controls.id.setValue(check.id);
+      } else {
+        this.reviewForm.reset();
+      }
+
+      this.gotoLink(this.tabActive);
     } else if (tab == 'data_organisasi') {
-      this.saveOrganisasi();
+      let data = {
+        organisasi_id: this.organisasiID,
+        status: this.reviewForm.controls.status.value,
+        keterangan: this.reviewForm.controls.keterangan.value,
+        tipe: tab,
+        tanggal_review: moment().format('YYYY-MM-DD'),
+        userid_review: this.userID,
+      };
 
-      this.tabActive = 'data_anggota';
+      this.isLoading = true;
+      if (this.reviewForm.controls.id.value) {
+        this.apiService
+          .updateVerifikasi(this.reviewForm.controls.id.value, data)
+          .subscribe((res) => {
+            if (res) {
+              this.isLoading = false;
+              this.tabActive = 'data_anggota';
+
+              let check = this.dataValidation
+                ? this.dataValidation.find((i) => i.tipe == this.tabActive)
+                : null;
+
+              if (check) {
+                this.reviewForm.controls.id.setValue(check.id);
+                this.reviewForm.controls.status.setValue(check.status);
+                this.reviewForm.controls.keterangan.setValue(check.keterangan);
+                this.reviewForm.controls.tipe.setValue(check.tipe);
+                this.reviewForm.controls.id.setValue(check.id);
+              } else {
+                this.reviewForm.reset();
+              }
+
+              this.gotoLink(this.tabActive);
+            }
+          });
+      } else {
+        this.apiService.createVerifikasi(data).subscribe((res) => {
+          if (res) {
+            this.isLoading = false;
+            this.tabActive = 'data_anggota';
+
+            let check = this.dataValidation
+              ? this.dataValidation.find((i) => i.tipe == this.tabActive)
+              : null;
+
+            if (check) {
+              this.reviewForm.controls.id.setValue(check.id);
+              this.reviewForm.controls.status.setValue(check.status);
+              this.reviewForm.controls.keterangan.setValue(check.keterangan);
+              this.reviewForm.controls.tipe.setValue(check.tipe);
+              this.reviewForm.controls.id.setValue(check.id);
+            } else {
+              this.reviewForm.reset();
+            }
+
+            this.gotoLink(this.tabActive);
+          }
+        });
+      }
     } else if (tab == 'data_anggota') {
-      this.tabActive = 'data_inventaris';
-    } else if (tab == 'data_inventaris') {
-      this.tabActive = 'data_pendukung';
-    } else if (tab == 'data_pendukung') {
-      this.tabActive = 'publish';
-    }
+      let data = {
+        organisasi_id: this.organisasiID,
+        status: this.reviewForm.controls.status.value,
+        keterangan: this.reviewForm.controls.keterangan.value,
+        tipe: tab,
+        tanggal_review: moment().format('YYYY-MM-DD'),
+        userid_review: this.userID,
+      };
 
-    this.gotoLink(this.tabActive);
+      this.isLoading = true;
+      if (this.reviewForm.controls.id.value) {
+        this.apiService
+          .updateVerifikasi(this.reviewForm.controls.id.value, data)
+          .subscribe((res) => {
+            if (res) {
+              this.tabActive = 'data_inventaris';
+              this.isLoading = false;
+
+              let check = this.dataValidation
+                ? this.dataValidation.find((i) => i.tipe == this.tabActive)
+                : null;
+
+              if (check) {
+                this.reviewForm.controls.id.setValue(check.id);
+                this.reviewForm.controls.status.setValue(check.status);
+                this.reviewForm.controls.keterangan.setValue(check.keterangan);
+                this.reviewForm.controls.tipe.setValue(check.tipe);
+                this.reviewForm.controls.id.setValue(check.id);
+              } else {
+                this.reviewForm.reset();
+              }
+
+              this.gotoLink(this.tabActive);
+            }
+          });
+      } else {
+        this.apiService.createVerifikasi(data).subscribe((res) => {
+          if (res) {
+            this.tabActive = 'data_inventaris';
+            this.isLoading = false;
+
+            let check = this.dataValidation
+              ? this.dataValidation.find((i) => i.tipe == this.tabActive)
+              : null;
+
+            if (check) {
+              this.reviewForm.controls.id.setValue(check.id);
+              this.reviewForm.controls.status.setValue(check.status);
+              this.reviewForm.controls.keterangan.setValue(check.keterangan);
+              this.reviewForm.controls.tipe.setValue(check.tipe);
+              this.reviewForm.controls.id.setValue(check.id);
+            } else {
+              this.reviewForm.reset();
+            }
+
+            this.gotoLink(this.tabActive);
+          }
+        });
+      }
+    } else if (tab == 'data_inventaris') {
+      let data = {
+        organisasi_id: this.organisasiID,
+        status: this.reviewForm.controls.status.value,
+        keterangan: this.reviewForm.controls.keterangan.value,
+        tipe: tab,
+        tanggal_review: moment().format('YYYY-MM-DD'),
+        userid_review: this.userID,
+      };
+
+      this.isLoading = true;
+      if (this.reviewForm.controls.id.value) {
+        this.apiService
+          .updateVerifikasi(this.reviewForm.controls.id.value, data)
+          .subscribe((res) => {
+            if (res) {
+              this.tabActive = 'data_pendukung';
+              this.isLoading = false;
+
+              let check = this.dataValidation
+                ? this.dataValidation.find((i) => i.tipe == this.tabActive)
+                : null;
+
+              if (check) {
+                this.reviewForm.controls.id.setValue(check.id);
+                this.reviewForm.controls.status.setValue(check.status);
+                this.reviewForm.controls.keterangan.setValue(check.keterangan);
+                this.reviewForm.controls.tipe.setValue(check.tipe);
+                this.reviewForm.controls.id.setValue(check.id);
+              } else {
+                this.reviewForm.reset();
+              }
+
+              this.gotoLink(this.tabActive);
+            }
+          });
+      } else {
+        this.apiService.createVerifikasi(data).subscribe((res) => {
+          if (res) {
+            this.tabActive = 'data_pendukung';
+            this.isLoading = false;
+
+            let check = this.dataValidation
+              ? this.dataValidation.find((i) => i.tipe == this.tabActive)
+              : null;
+
+            if (check) {
+              this.reviewForm.controls.id.setValue(check.id);
+              this.reviewForm.controls.status.setValue(check.status);
+              this.reviewForm.controls.keterangan.setValue(check.keterangan);
+              this.reviewForm.controls.tipe.setValue(check.tipe);
+              this.reviewForm.controls.id.setValue(check.id);
+            } else {
+              this.reviewForm.reset();
+            }
+
+            this.gotoLink(this.tabActive);
+          }
+        });
+      }
+    } else if (tab == 'data_pendukung') {
+      let data = {
+        organisasi_id: this.organisasiID,
+        status: this.reviewForm.controls.status.value,
+        keterangan: this.reviewForm.controls.keterangan.value,
+        tipe: tab,
+        tanggal_review: moment().format('YYYY-MM-DD'),
+        userid_review: this.userID,
+      };
+
+      this.isLoading = true;
+      if (this.reviewForm.controls.id.value) {
+        this.apiService
+          .updateVerifikasi(this.reviewForm.controls.id.value, data)
+          .subscribe((res) => {
+            if (res) {
+              this.tabActive = 'review';
+              this.isLoading = false;
+
+              this.getValidation();
+              this.gotoLink(this.tabActive);
+            }
+          });
+      } else {
+        this.apiService.createVerifikasi(data).subscribe((res) => {
+          if (res) {
+            this.tabActive = 'review';
+            this.isLoading = false;
+
+            this.getValidation();
+            this.gotoLink(this.tabActive);
+          }
+        });
+      }
+    }
   }
 
   prev(tab: string) {
@@ -306,15 +588,36 @@ export class RegistrasiComponent implements OnInit {
       this.tabActive = 'general';
     } else if (tab == 'data_anggota') {
       this.tabActive = 'data_organisasi';
+      this.getValidation();
     } else if (tab == 'data_inventaris') {
       this.tabActive = 'data_anggota';
+      this.getValidation();
     } else if (tab == 'data_pendukung') {
       this.tabActive = 'data_inventaris';
-    } else if (tab == 'publish') {
+      this.getValidation();
+    } else if (tab == 'review') {
       this.tabActive = 'data_pendukung';
+      this.getValidation();
     }
 
     this.gotoLink(this.tabActive);
+  }
+
+  saveStatusPendaftaran() {
+    this.isLoading = true;
+    let data = {
+      organisasi_id: this.organisasi.id,
+      status: this.checkValidasi() ? 'Allow' : 'Denny',
+    };
+    this.apiService.updateStatusPendaftaran(data).subscribe(
+      (res) => {
+        if (res) {
+          this.isLoading = false;
+          this.updateStatus();
+        }
+      },
+      (error) => console.log('error')
+    );
   }
 
   saveOrganisasi() {
@@ -329,22 +632,13 @@ export class RegistrasiComponent implements OnInit {
   }
 
   updateStatus() {
-    this.isLoading = true;
-    let data = this.organisasiForm.value;
-    data.status = 'Request';
-    this.apiService.saveOrganisasi(data).subscribe((res) => {
-      if (res) {
-        console.log(res);
-
-        this.router.navigateByUrl('/homepage');
-      }
-    });
+    this.router.navigateByUrl('/admin/homepage');
   }
 
   getOrganisasi() {
     this.isLoading = true;
 
-    this.apiService.getOrganisasiByUser(this.userID).subscribe(
+    this.apiService.getOrganisasiDetail(this.organisasiID).subscribe(
       (res: any) => {
         this.isLoading = false;
 
@@ -397,34 +691,6 @@ export class RegistrasiComponent implements OnInit {
           }
           if (dataOrganisasi.jenis_kesenian) {
             this.selectJenisKesenian();
-          }
-        }
-
-        if (res && res.data && !res.data.status) {
-          // belum input mungkin
-        } else if (res && res.data && res.data.status) {
-          if (res.data.status == 'Allow') {
-            alert(
-              'pendaftaran berhasil, sistem akan menampilkan kartu induk kesenian'
-            );
-
-            this.router.navigateByUrl('homepage');
-          } else if (res.data.status == 'Denny') {
-            this.apiService
-              .getVerifikasi(this.organisasi.id)
-              .subscribe((res: any) => {
-                if (res) {
-                  this.dataVerifikasi = res.data.filter(
-                    (i) => i.status == 'tdk_valid'
-                  );
-                }
-              });
-
-            // this.router.navigateByUrl('homepage');
-          } else if (res.data.status == 'Request') {
-            alert('pendaftaran masih dalam proses validasi');
-
-            this.router.navigateByUrl('homepage');
           }
         }
       },
@@ -766,6 +1032,12 @@ export class RegistrasiComponent implements OnInit {
       return age + ' TH';
     } else {
       return '-';
+    }
+  }
+
+  replaceString(string) {
+    if (string) {
+      return string.replace('_', ' ');
     }
   }
 }

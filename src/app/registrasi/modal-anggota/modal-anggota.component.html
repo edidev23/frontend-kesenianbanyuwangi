@@ -148,7 +148,17 @@
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
-                  <label for="whatsapp" class="form-label"> No Whatsapp </label>
+                  <label for="whatsapp" class="form-label">
+                    No Whatsapp
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        anggotaForm.controls['jabatan'].value == 'Ketua' ||
+                        anggotaForm.controls['jabatan'].value == 'Sekretaris'
+                      "
+                      >*</span
+                    >
+                  </label>
                   <input
                     formControlName="whatsapp"
                     id="whatsapp"
@@ -156,6 +166,18 @@
                     class="form-control"
                     placeholder="Enter"
                   />
+
+                  <div
+                    class="text-small"
+                    *ngIf="
+                      anggotaForm.controls['jabatan'].value == 'Ketua' ||
+                      anggotaForm.controls['jabatan'].value == 'Sekretaris'
+                    "
+                  >
+                    Wajib memasukkan Nomor whatsapp aktif guna untuk
+                    menginformasikan status pendaftaran kartu induk anda. Contoh
+                    nomor wa : <b>081234421112</b>
+                  </div>
                 </div>
               </div>
             </div>
@@ -172,7 +194,17 @@
       >
         CANCEL
       </button>
-      <button type="button" class="btn btn-info width-100" (click)="save()">
+      <button
+        type="button"
+        class="btn btn-info width-100"
+        (click)="save()"
+        [disabled]="
+          (anggotaForm.controls['jabatan'].value == 'Ketua' &&
+            !anggotaForm.controls['whatsapp'].value) ||
+          (anggotaForm.controls['jabatan'].value == 'Sekretaris' &&
+            !anggotaForm.controls['whatsapp'].value)
+        "
+      >
         SAVE
       </button>
     </div>

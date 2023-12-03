@@ -34,6 +34,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./admin/users/users.module').then((m) => m.UsersModule),
   },
+  {
+    path: 'admin/verifikasi/:organisasi_id',
+    loadChildren: () =>
+      import('./admin/verifikasi/verifikasi.module').then(
+        (m) => m.VerifikasiModule
+      ),
+  },
 ];
 
 @NgModule({

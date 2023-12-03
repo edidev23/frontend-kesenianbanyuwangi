@@ -65,9 +65,99 @@
         </button>
       </ng-container>
       <ng-container *ngIf="organisasi && organisasi.status == 'Allow'">
-        <h3>Pendaftaran Berhasil</h3>
+        <div class="row">
+          <div class="col-lg-6">
+            <ng-container
+              *ngIf="
+                organisasi.status && checkExpired(organisasi.tanggal_expired)
+              "
+            >
+              <h3 class="text-danger">Penting !</h3>
+              <p>
+                Mohon maaf kartu anda sudah tidak aktif. Segera lakukan
+                perpanjangan dengan mengajukan melalui tombol dibawah ini :
+              </p>
 
-        <p>Anda telah terdaftar dalam Kartu Induk Kesenian Kab. Banyuwangi</p>
+              <button class="btn btn-info mb-4">Perpanjangan Kartu</button>
+            </ng-container>
+
+            <ng-container
+              *ngIf="
+                organisasi.status && !checkExpired(organisasi.tanggal_expired)
+              "
+            >
+              <h3>Pendaftaran Berhasil</h3>
+
+              <p>
+                Anda telah terdaftar dalam Kartu Induk Kesenian Kab. Banyuwangi
+              </p>
+            </ng-container>
+
+            <table class="table table-hover">
+              <tr>
+                <td colspan="2" align="center">KARTU INDUK KESENIAN</td>
+              </tr>
+              <tr>
+                <td>Nomor Induk</td>
+                <td>
+                  : {{ organisasi.nomor_induk ? organisasi.nomor_induk : "-" }}
+                </td>
+              </tr>
+              <tr>
+                <td>Nama Organisasi</td>
+                <td>: {{ organisasi.nama }}</td>
+              </tr>
+              <tr>
+                <td>Nama Pimpinan</td>
+                <td>: {{ organisasi.nama_ketua }}</td>
+              </tr>
+              <tr>
+                <td>Tanggal Terdaftar</td>
+                <td>: {{ formatDate(organisasi.tanggal_daftar) }}</td>
+              </tr>
+              <tr>
+                <td>Alamat</td>
+                <td>: {{ organisasi.alamat }}</td>
+              </tr>
+              <tr>
+                <td>No. Telp. Ketua</td>
+                <td>: {{ organisasi.no_telp_ketua }}</td>
+              </tr>
+              <tr>
+                <td>Jenis Kesenian</td>
+                <td>: {{ organisasi.nama_jenis_kesenian }}</td>
+              </tr>
+              <tr>
+                <td>Berlaku</td>
+                <td>
+                  :
+                  <ng-container
+                    *ngIf="checkExpired(organisasi.tanggal_expired)"
+                  >
+                    <div class="badge badge-danger">
+                      Sudah tidak berlaku sejak
+                      {{ checkExpired(organisasi.tanggal_expired) }} Lalu
+                    </div>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="!checkExpired(organisasi.tanggal_expired)"
+                  >
+                    {{ getTanggalBefore(organisasi.tanggal_expired) }} -
+                    {{ formatDate(organisasi.tanggal_expired) }}
+                  </ng-container>
+                </td>
+              </tr>
+              <tr *ngIf="getFotoKetua(organisasi.id)">
+                <td>Foto Pimpinan</td>
+                <td>
+                  <div class="ktp">
+                    <img [src]="getFotoKetua(organisasi.id)" alt="" />
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </ng-container>
 
       <ng-container *ngIf="!isLoading && !organisasi">

@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPen,
+  faSignInAlt,
+  faSyncAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/api.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ModalStatusComponent } from './modal-status/modal-status.component';
+import { ModalMessageComponent } from 'src/app/utils/modal-message/modal-message.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-homepage',
@@ -17,9 +25,11 @@ export class HomepageComponent implements OnInit {
 
   dataKesenian: any;
 
-  faPencil = faPen
+  faPencil = faPen;
+  faUpdate = faSyncAlt;
 
   constructor(
+    private modalService: NgbModal,
     private apiService: ApiService,
     private authService: AuthService,
     private router: Router
@@ -55,5 +65,78 @@ export class HomepageComponent implements OnInit {
         );
       }
     });
+  }
+
+  modalUpdate(item) {
+    const modalRef = this.modalService.open(ModalStatusComponent, {
+      centered: true,
+      size: 'lg',
+    });
+
+    modalRef.componentInstance.detail = item;
+    modalRef.componentInstance.emitModal.subscribe((res: any) => {
+      if (res) {
+        this.isLoading = true;
+
+        let data = {
+          organisasi_id: item.id,
+          status: 'Update',
+        };
+        this.apiService.updateStatusPendaftaran(data).subscribe(
+          (res) => {
+            if (res) {
+              this.getData();
+              this.isLoading = false;
+            }
+          },
+          (err) => {
+            console.log(err);
+            this.isLoading = false;
+            const modalRef = this.modalService.open(ModalMessageComponent, {
+              centered: true,
+              size: 'md',
+            });
+            modalRef.componentInstance.errorMsg = 'Perpanjang kartu Error';
+            modalRef.componentInstance.errors = err.error.message;
+          }
+        );
+      }
+    });
+  }
+
+  formatDate(date) {
+    const currentDate = new Date(date);
+
+    const options: any = {
+      // weekday: 'long',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      // hour: '2-digit',
+      // minute: '2-digit',
+      // second: '2-digit',
+      // hour12: false, // Use 24-hour format
+      timeZone: 'Asia/Jakarta', // Set the time zone to Indonesia (Jakarta)
+    };
+
+    const formattedDate = currentDate.toLocaleString('id-ID', options);
+    return formattedDate;
+  }
+
+  checkExpired(date) {
+    const tanggalSekarang = moment();
+    const tanggalInput = moment(date);
+
+    if (tanggalSekarang.isBefore(tanggalInput)) {
+      return false;
+    } else {
+      // console.log(
+      //   'Tanggal sekarang lebih besar atau sama dengan tanggal yang dimasukkan.'
+      // );
+      // const selisihHari = tanggalInput.diff(tanggalSekarang, 'days');
+      // console.log(`Selisih dalam hari: ${selisihHari} hari`);
+
+      return true;
+    }
   }
 }

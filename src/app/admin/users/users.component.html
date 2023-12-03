@@ -29,7 +29,11 @@
                   <td>{{ i + 1 }}</td>
 
                   <td>
-                    {{ item.name }}
+                    {{ item.name }} <br />
+                    
+                    <ng-container *ngIf="checkOrganisasi(item.id)">
+                      Nama Organisasi : {{ checkOrganisasi(item.id) }}
+                    </ng-container>
                   </td>
                   <td>
                     {{ item.email }}

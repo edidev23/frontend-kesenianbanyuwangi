@@ -24,6 +24,8 @@ export class UsersComponent implements OnInit {
   faPencil = faPen;
   faDelete = faTrash;
 
+  dataOrganisasi: any;
+
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
@@ -61,6 +63,20 @@ export class UsersComponent implements OnInit {
         console.log(this.dataUsers);
       }
     });
+
+    this.apiService.getOrganisasiList().subscribe((res: any) => {
+      if (res) {
+        this.dataOrganisasi = res.data;
+      }
+    });
+  }
+
+  checkOrganisasi(userid) {
+    if (this.dataOrganisasi) {
+      let check = this.dataOrganisasi.find((d) => d.user_id == userid);
+
+      return check ? check.nama : '';
+    }
   }
 
   createUser() {

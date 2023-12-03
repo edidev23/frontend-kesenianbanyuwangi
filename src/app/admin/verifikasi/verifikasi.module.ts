@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomepageComponent } from './homepage.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LayoutsModule } from '../layouts/layouts.module';
+import { VerifikasiComponent } from './verifikasi.component';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ModalStatusComponent } from './modal-status/modal-status.component';
+import { LayoutsModule } from '../layouts/layouts.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomepageComponent,
+    component: VerifikasiComponent,
   },
 ];
 
 @NgModule({
-  declarations: [HomepageComponent, ModalStatusComponent],
+  declarations: [VerifikasiComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -25,4 +24,4 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ],
 })
-export class HomepageModule {}
+export class VerifikasiModule {}
