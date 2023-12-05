@@ -59,7 +59,7 @@ export class UsersComponent implements OnInit {
     this.apiService.getUsers().subscribe((res: any) => {
       if (res) {
         this.isLoading = false;
-        this.dataUsers = res.sort((a, b) => a.name.localeCompare(b.name));
+        this.dataUsers = res.sort((a, b) => a.role.localeCompare(b.role) && a.name.localeCompare(b.name));
         console.log(this.dataUsers);
       }
     });

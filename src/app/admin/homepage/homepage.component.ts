@@ -4,6 +4,7 @@ import {
   faPen,
   faSignInAlt,
   faSyncAlt,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/api.service';
@@ -11,6 +12,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { ModalStatusComponent } from './modal-status/modal-status.component';
 import { ModalMessageComponent } from 'src/app/utils/modal-message/modal-message.component';
 import * as moment from 'moment';
+import { ModalDeleteComponent } from 'src/app/utils/modal-delete/modal-delete.component';
 
 @Component({
   selector: 'app-homepage',
@@ -27,6 +29,7 @@ export class HomepageComponent implements OnInit {
 
   faPencil = faPen;
   faUpdate = faSyncAlt;
+  faDelete = faTrash;
 
   constructor(
     private modalService: NgbModal,
@@ -59,10 +62,14 @@ export class HomepageComponent implements OnInit {
   getData() {
     this.apiService.getOrganisasiList().subscribe((res: any) => {
       if (res) {
-        this.dataKesenian = res.data.filter(
-          (d) =>
-            d.status == 'Request' || d.status == 'Allow' || d.status == 'Denny'
-        );
+        this.dataKesenian = res.data
+          .filter(
+            (d) =>
+              d.status == 'Request' ||
+              d.status == 'Allow' ||
+              d.status == 'Denny'
+          )
+          .sort((a, b) => b.status.localeCompare(a.status));
       }
     });
   }
@@ -138,5 +145,34 @@ export class HomepageComponent implements OnInit {
 
       return true;
     }
+  }
+
+  deleteOrganisasi(id) {
+    const modalRef = this.modalService.open(ModalDeleteComponent, {
+      centered: true,
+      size: 'sm',
+    });
+
+    modalRef.componentInstance.emitModal.subscribe((res: any) => {
+      this.isLoading = true;
+      this.apiService.deleteOrganisasi(id).subscribe(
+        (res) => {
+          if (res) {
+            this.getData();
+            this.isLoading = false;
+          }
+        },
+        (err) => {
+          console.log(err);
+          this.isLoading = false;
+          const modalRef = this.modalService.open(ModalMessageComponent, {
+            centered: true,
+            size: 'md',
+          });
+          modalRef.componentInstance.errorMsg = 'Delete Error';
+          modalRef.componentInstance.errors = err.error.message;
+        }
+      );
+    });
   }
 }

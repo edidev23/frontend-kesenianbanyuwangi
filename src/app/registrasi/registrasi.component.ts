@@ -322,8 +322,9 @@ export class RegistrasiComponent implements OnInit {
 
     this.apiService
       .saveOrganisasi(this.organisasiForm.value)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
         console.log(res);
+        this.organisasi = res.data;
         this.isLoading = false;
       });
   }
@@ -619,6 +620,7 @@ export class RegistrasiComponent implements OnInit {
           .subscribe((res: any) => {
             if (res) {
               console.log(res);
+              this.getDocument();
               // this.getUserDetail();
             }
           });
@@ -644,6 +646,7 @@ export class RegistrasiComponent implements OnInit {
           .subscribe((res: any) => {
             if (res) {
               console.log(res);
+              this.getDocument();
               // this.getUserDetail();
             }
           });
@@ -668,6 +671,7 @@ export class RegistrasiComponent implements OnInit {
           .uploadDocument(this.organisasi.id, 'BANNER', this.selectedBanner)
           .subscribe((res: any) => {
             if (res) {
+              this.getDocument();
               console.log(res);
               // this.getUserDetail();
             }
@@ -713,6 +717,7 @@ export class RegistrasiComponent implements OnInit {
 
               this.selectedFiles.push(`${linkImage}/${res.data.image}`);
               this.isLoading = false;
+              this.getDocument();
             }
           });
       };

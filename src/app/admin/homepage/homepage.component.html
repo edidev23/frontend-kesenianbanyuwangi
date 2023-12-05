@@ -10,8 +10,8 @@
         <thead>
           <tr>
             <td align="center">No</td>
-            <td>Nomor Induk</td>
             <td>Nama Kesenian</td>
+            <td>Nomor Induk</td>
             <td>Jenis Kesenian</td>
             <td>Alamat</td>
             <td>Ketua</td>
@@ -25,31 +25,34 @@
           <tr *ngFor="let item of dataKesenian; let i = index">
             <td align="center">{{ i + 1 }}</td>
 
+            <td>
+              {{ item.nama }}
+            </td>
             <td align="center">
               {{ item.nomor_induk ? item.nomor_induk : "-" }}
             </td>
             <td>
-              {{ item.nama }}
-            </td>
-            <td>
-              {{ item.nama_jenis_kesenian }} - {{ item.nama_sub_kesenian }}
+              {{ item.nama_jenis_kesenian }}
+              {{ item.nama_sub_kesenian ? " - " + item.nama_sub_kesenian : "-" }}
             </td>
             <td>
               {{ item.alamat }}
             </td>
             <td>
               {{ item.nama_ketua }} <br />
-              Telp. {{ item.no_telp_ketua }}
+              {{ item.no_telp_ketua ? "Telp. " + item.no_telp_ketua : "-" }}
             </td>
             <td>
               {{ formatDate(item.tanggal_daftar) }}
             </td>
             <td>
-              {{ formatDate(item.tanggal_expired) }}
+              {{
+                item.tanggal_expired ? formatDate(item.tanggal_expired) : "-"
+              }}
             </td>
             <td>
               <ng-container *ngIf="item.status == 'Request'">
-                <div class="badge badge-info">
+                <div class="badge badge-primary">
                   {{ item.status }}
                 </div>
               </ng-container>
@@ -108,6 +111,14 @@
                   <fa-icon [icon]="faUpdate"></fa-icon>
                 </button>
               </ng-container>
+
+              <button
+                title="Delete Data"
+                class="btn text-danger"
+                (click)="deleteOrganisasi(item.id)"
+              >
+                <fa-icon [icon]="faDelete"></fa-icon>
+              </button>
             </td>
           </tr>
         </tbody>

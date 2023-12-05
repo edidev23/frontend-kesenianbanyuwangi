@@ -91,7 +91,7 @@ export class VerifikasiComponent implements OnInit {
     organisasi_id: [''],
     status: ['', Validators.required],
     tipe: [''],
-    keterangan: [''],
+    keterangan: ['', Validators.required],
     foto: [''],
     userid_review: [''],
     tanggal_review: [''],

@@ -118,6 +118,14 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  deleteOrganisasi(id) {
+    return this.http
+      .delete(environment.apiUrl + `delete-organisasi-user/${id}`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   getAnggotaByUser(userid) {
     return this.http
       .get(environment.apiUrl + `anggota/${userid}`, {

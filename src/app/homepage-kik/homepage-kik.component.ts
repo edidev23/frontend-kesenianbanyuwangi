@@ -4,6 +4,8 @@ import { ApiService } from '../api.service';
 import { AuthService } from '../auth/auth.service';
 import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PreviewImageComponent } from '../utils/preview-image/preview-image.component';
 
 @Component({
   selector: 'app-homepage-kik',
@@ -23,7 +25,8 @@ export class HomepageKikComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private modalService: NgbModal
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -153,5 +156,14 @@ export class HomepageKikComponent implements OnInit {
 
   gotoRegistrasi() {
     this.router.navigateByUrl('/registrasi');
+  }
+
+  previewKartu() {
+    const modalRef = this.modalService.open(PreviewImageComponent, {
+      centered: true,
+      size: 'md',
+    });
+    // modalRef.componentInstance.errorMsg = 'Error Upload';
+    // modalRef.componentInstance.errors = ['Upload Photo Max 16'];
   }
 }

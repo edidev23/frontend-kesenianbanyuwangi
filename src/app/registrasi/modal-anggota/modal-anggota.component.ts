@@ -18,6 +18,7 @@ export class ModalAnggotaComponent implements OnInit {
   anggotaForm = this.fb.group({
     id: [''],
     nama: ['', Validators.required],
+    nik: ['', Validators.required],
     jabatan: ['', Validators.required],
     organisasi_id: ['', Validators.required],
     tanggal_lahir: [''],
@@ -50,6 +51,7 @@ export class ModalAnggotaComponent implements OnInit {
     if (this.detailAnggota) {
       this.anggotaForm.controls.id.setValue(this.detailAnggota.id);
       this.anggotaForm.controls.nama.setValue(this.detailAnggota.nama);
+      this.anggotaForm.controls.nik.setValue(this.detailAnggota.nik);
       this.anggotaForm.controls.jabatan.setValue(this.detailAnggota.jabatan);
       this.anggotaForm.controls.organisasi_id.setValue(
         this.detailAnggota.organisasi_id.toString()

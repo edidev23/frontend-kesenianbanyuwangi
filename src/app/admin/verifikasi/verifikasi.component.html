@@ -300,7 +300,7 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <td>No</td>
+                        <td>NIK</td>
                         <td>Nama</td>
                         <td>L/P</td>
                         <td>Umur</td>
@@ -312,7 +312,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let item of userList; let i = index">
-                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.nik }}</td>
                         <td>{{ item.nama }}</td>
                         <td>
                           {{ item.jenis_kelamin ? item.jenis_kelamin : "-" }}
@@ -321,7 +321,7 @@
                         <td>{{ item.pekerjaan ? item.pekerjaan : "-" }}</td>
                         <td>{{ item.alamat ? item.alamat : "-" }}</td>
                         <td>{{ item.jabatan }}</td>
-                        <td>{{ item.kontak ? item.kontak : "-" }}</td>
+                        <td>{{ item.whatsapp ? item.whatsapp : "-" }}</td>
                       </tr>
 
                       <ng-container *ngIf="userList && userList.length == 0">
