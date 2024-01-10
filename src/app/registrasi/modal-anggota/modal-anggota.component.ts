@@ -89,6 +89,12 @@ export class ModalAnggotaComponent implements OnInit {
       }
     }
 
+    let noWhatsapp: string = this.anggotaForm.controls.whatsapp.value;
+
+    if (noWhatsapp) {
+      this.anggotaForm.controls.whatsapp.setValue(noWhatsapp);
+    }
+
     if (this.anggotaForm.controls.id.value) {
       this.apiService
         .updateAnggota(this.anggotaForm.controls.id.value, anggotaList)

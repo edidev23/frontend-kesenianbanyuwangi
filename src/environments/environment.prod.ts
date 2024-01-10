@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://api.kesenianbanyuwangi.com/api/',
+  url: 'https://api.kesenianbanyuwangi.com/',
 };

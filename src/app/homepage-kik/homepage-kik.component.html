@@ -66,7 +66,7 @@
       </ng-container>
       <ng-container *ngIf="organisasi && organisasi.status == 'Allow'">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-7">
             <ng-container
               *ngIf="
                 organisasi.status && checkExpired(organisasi.tanggal_expired)
@@ -95,42 +95,49 @@
 
             <table class="table table-hover">
               <tr>
-                <td colspan="2" align="center">KARTU INDUK KESENIAN</td>
+                <td colspan="3" align="center">KARTU INDUK KESENIAN</td>
               </tr>
               <tr>
-                <td>Nomor Induk</td>
+                <td class="label">Nomor Induk</td>
+                <td class="w-1">:</td>
                 <td>
-                  : {{ organisasi.nomor_induk ? organisasi.nomor_induk : "-" }}
+                  {{ organisasi.nomor_induk ? organisasi.nomor_induk : "-" }}
                 </td>
               </tr>
               <tr>
-                <td>Nama Organisasi</td>
-                <td>: {{ organisasi.nama }}</td>
+                <td class="label">Nama Organisasi</td>
+                <td class="w-1">:</td>
+                <td>{{ organisasi.nama }}</td>
               </tr>
               <tr>
-                <td>Nama Pimpinan</td>
-                <td>: {{ organisasi.nama_ketua }}</td>
+                <td class="label">Nama Pimpinan</td>
+                <td class="w-1">:</td>
+                <td>{{ organisasi.nama_ketua }}</td>
               </tr>
               <tr>
-                <td>Tanggal Terdaftar</td>
-                <td>: {{ formatDate(organisasi.tanggal_daftar) }}</td>
+                <td class="label">Tanggal Terdaftar</td>
+                <td class="w-1">:</td>
+                <td>{{ formatDate(organisasi.tanggal_daftar) }}</td>
               </tr>
               <tr>
-                <td>Alamat</td>
-                <td>: {{ organisasi.alamat }}</td>
+                <td class="label">Alamat</td>
+                <td class="w-1">:</td>
+                <td>{{ organisasi.alamat }}</td>
               </tr>
               <tr>
-                <td>No. Telp. Ketua</td>
-                <td>: {{ organisasi.no_telp_ketua }}</td>
+                <td class="label">No. Telp. Ketua</td>
+                <td class="w-1">:</td>
+                <td>{{ organisasi.no_telp_ketua }}</td>
               </tr>
               <tr>
-                <td>Jenis Kesenian</td>
-                <td>: {{ organisasi.nama_jenis_kesenian }}</td>
+                <td class="label">Jenis Kesenian</td>
+                <td class="w-1">:</td>
+                <td>{{ organisasi.nama_jenis_kesenian }}</td>
               </tr>
               <tr>
-                <td>Berlaku</td>
+                <td class="label">Berlaku</td>
+                <td class="w-1">:</td>
                 <td>
-                  :
                   <ng-container
                     *ngIf="checkExpired(organisasi.tanggal_expired)"
                   >
@@ -148,7 +155,8 @@
                 </td>
               </tr>
               <tr *ngIf="getFotoKetua(organisasi.id)">
-                <td>Foto Pimpinan</td>
+                <td class="label">Foto Pimpinan</td>
+                <td></td>
                 <td>
                   <div class="ktp">
                     <img [src]="getFotoKetua(organisasi.id)" alt="" />
@@ -157,8 +165,13 @@
               </tr>
             </table>
           </div>
-          <div class="col-lg-6">
-            <button class="btn btn-info btn-sm" (click)="previewKartu()">Lihat Kartu</button>
+          <div class="col-lg-5">
+            <button
+              class="btn btn-info btn-sm"
+              (click)="previewKartu(organisasi)"
+            >
+              Lihat Kartu
+            </button>
           </div>
         </div>
       </ng-container>

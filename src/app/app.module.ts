@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomepageKikComponent } from './homepage-kik/homepage-kik.component';
 import { LayoutsModule } from './admin/layouts/layouts.module';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent, HomepageKikComponent],
@@ -16,9 +17,9 @@ import { LayoutsModule } from './admin/layouts/layouts.module';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    LayoutsModule
+    LayoutsModule,
   ],
-  providers: [],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

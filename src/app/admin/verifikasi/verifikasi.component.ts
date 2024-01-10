@@ -147,6 +147,8 @@ export class VerifikasiComponent implements OnInit {
     this.apiService.getJenisKesenian().subscribe((res) => {
       if (res) {
         this.jenisKesenian = res;
+
+        this.selectJenisKesenian();
       }
     });
 
@@ -174,9 +176,6 @@ export class VerifikasiComponent implements OnInit {
           this.dataValidation = res.data;
 
           let check = res.data.find((i) => i.tipe == this.tabActive);
-
-          console.log(check, this.tabActive);
-          console.log(this.dataValidation);
 
           if (check) {
             this.reviewForm.controls.id.setValue(check.id);

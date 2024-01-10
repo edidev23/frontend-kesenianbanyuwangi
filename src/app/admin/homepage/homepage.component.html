@@ -3,7 +3,7 @@
   <app-sidebar></app-sidebar>
 
   <div class="main-content">
-    <div class="content pt-5">
+    <div class="content table-responsive pt-5">
       <h3 class="mb-3">Data Induk Kesenian</h3>
 
       <table class="table table-bordered">
@@ -102,6 +102,14 @@
               </ng-container>
 
               <ng-container *ngIf="item.status == 'Allow'">
+                <button
+                  title="Verifikasi Data"
+                  class="btn text-info mr-2"
+                  routerLink="/admin/verifikasi/{{ item.id }}"
+                >
+                  <fa-icon [icon]="faPencil"></fa-icon>
+                </button>
+
                 <button
                   [disabled]="!checkExpired(item.tanggal_expired)"
                   class="btn text-info"

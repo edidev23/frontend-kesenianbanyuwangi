@@ -1,0 +1,71 @@
+<header>
+  <nav class="navbar navbar-dark bg-dark fixed-top shadow">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarText"
+      aria-controls="navbarText"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" [routerLink]="'/'"> Kartu Induk Kesenian </a>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" *ngIf="role == 'user-kik'">
+          <a routerLink="/" class="nav-link" routerLinkActive="active">
+            <fa-icon [icon]="faIdCard"></fa-icon>
+
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <ng-container *ngIf="role == 'admin'">
+          <li class="nav-item">
+            <a
+              routerLink="/admin/homepage"
+              class="nav-link"
+              routerLinkActive="active"
+            >
+              <fa-icon [icon]="faIdCard"></fa-icon>
+
+              <span>Data Kesenian</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              routerLink="/admin/jenis-kesenian"
+              class="nav-link"
+              routerLinkActive="active"
+            >
+              <fa-icon [icon]="faRunning"></fa-icon>
+
+              <span>Data Jenis Kesenian</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              routerLink="/admin/users"
+              class="nav-link"
+              routerLinkActive="active"
+            >
+              <fa-icon [icon]="faUsers"></fa-icon>
+
+              <span>Data Users</span>
+            </a>
+          </li>
+        </ng-container>
+
+        <li class="nav-item">
+          <a class="nav-link" (click)="logout()">
+            <fa-icon [icon]="faLogout"></fa-icon>
+
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

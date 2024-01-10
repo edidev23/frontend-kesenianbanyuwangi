@@ -16,6 +16,16 @@ body {
   padding-right: 70px;
 }
 
+.wrapper {
+  margin-top: 0;
+}
+
+@media (max-width: 1000px) {
+  .wrapper {
+    margin-top: 80px;
+  }
+}
+
 @media (max-width: 1336px) {
   .container-fluid {
     padding-left: 15px;
@@ -351,12 +361,12 @@ button:hover {
 }
 
 .main-content {
-  margin-left: 6.5rem;
+  margin-left: 17rem;
 
   .content {
     background-color: #f6f7f8;
     padding: 2rem;
-    min-height: calc(100vh - 98px);
+    min-height: calc(100vh - 60px);
   }
 }
 
@@ -374,7 +384,7 @@ button:hover {
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 1000px) {
   .main-content {
     margin-left: 0;
   }

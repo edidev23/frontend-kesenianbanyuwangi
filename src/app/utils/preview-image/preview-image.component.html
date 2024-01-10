@@ -1,3 +1,83 @@
-<div class="card card-body">
-    <img src="" class="img-responsive" alt="">
+<div class="card">
+  <div class="card-header">
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="kartu-digital">
+      <img src="/assets/img/template.jpeg" class="img-responsive" alt="" />
+      <div class="content">
+        <table>
+          <tr>
+            <td class="label">NOMOR INDUK</td>
+            <td class="w-1">:</td>
+            <td>{{ dataOrganisasi.nomor_induk }}</td>
+          </tr>
+          <tr>
+            <td class="label">NAMA ORGANISASI</td>
+            <td class="w-1">:</td>
+            <td>{{ dataOrganisasi.nama }}</td>
+          </tr>
+          <tr>
+            <td class="label">NAMA PIMPINAN</td>
+            <td class="w-1">:</td>
+            <td>{{ dataOrganisasi.nama_ketua }}</td>
+          </tr>
+          <tr>
+            <td class="label">TANGGAL TERDAFTAR</td>
+            <td class="w-1">:</td>
+            <td>{{ formatDate(dataOrganisasi.tanggal_daftar) }}</td>
+          </tr>
+          <tr>
+            <td class="label">ALAMAT</td>
+            <td class="w-1">:</td>
+            <td>{{ dataOrganisasi.alamat }}</td>
+          </tr>
+          <tr>
+            <td class="label">NO.TELP. KETUA</td>
+            <td class="w-1">:</td>
+            <td>{{ dataOrganisasi.no_telp_ketua }}</td>
+          </tr>
+          <tr>
+            <td class="label">JENIS KESENIAN</td>
+            <td class="w-1">:</td>
+            <td>
+              {{
+                dataOrganisasi.nama_sub_kesenian
+                  ? dataOrganisasi.nama_sub_kesenian
+                  : dataOrganisasi.nama_jenis_kesenian
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td class="label">MASA AKTIF</td>
+            <td class="w-1">:</td>
+            <td>
+              <ng-container *ngIf="checkExpired(dataOrganisasi.tanggal_expired)">
+                <div class="badge badge-danger">
+                  Sudah tidak berlaku sejak
+                  {{ checkExpired(dataOrganisasi.tanggal_expired) }} Lalu
+                </div>
+              </ng-container>
+              <ng-container *ngIf="!checkExpired(dataOrganisasi.tanggal_expired)">
+                {{ getTanggalBefore(dataOrganisasi.tanggal_expired) }} -
+                {{ formatDate(dataOrganisasi.tanggal_expired) }}
+              </ng-container>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="pas-foto">
+        <img [src]="getFotoKetua()" alt="" />
+      </div>
+    </div>
+  </div>
 </div>

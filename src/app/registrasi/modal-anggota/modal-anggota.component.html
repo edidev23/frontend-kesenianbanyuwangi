@@ -173,24 +173,29 @@
                       >*</span
                     >
                   </label>
-                  <input
-                    formControlName="whatsapp"
-                    id="whatsapp"
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter"
-                  />
+                  <div class="input-group">
+                    <!-- <div class="input-group-prepend">
+                      <span class="input-group-text" id="numbber">+62</span>
+                    </div> -->
+                    <input
+                      formControlName="whatsapp"
+                      type="text"
+                      class="form-control"
+                      placeholder="No Whatsapp"
+                      aria-label="No Whatsapp"
+                      aria-describedby="numbber"
+                    />
+                  </div>
 
                   <div
                     class="text-small"
-                    *ngIf="
-                      anggotaForm.controls['jabatan'].value == 'Ketua' ||
-                      anggotaForm.controls['jabatan'].value == 'Sekretaris'
-                    "
+                    *ngIf="anggotaForm.controls['jabatan'].value == 'Ketua'"
                   >
                     Wajib memasukkan Nomor whatsapp aktif guna untuk
-                    menginformasikan status pendaftaran kartu induk anda. Contoh
-                    nomor wa : <b>081234421112</b>
+                    menginformasikan status pendaftaran kartu induk anda.
+                  </div>
+                  <div class="text-small">
+                    Contoh nomor wa : <b>081234421112</b>
                   </div>
                 </div>
               </div>
@@ -213,10 +218,8 @@
         class="btn btn-info width-100"
         (click)="save()"
         [disabled]="
-          (anggotaForm.controls['jabatan'].value == 'Ketua' &&
-            !anggotaForm.controls['whatsapp'].value) ||
-          (anggotaForm.controls['jabatan'].value == 'Sekretaris' &&
-            !anggotaForm.controls['whatsapp'].value)
+          anggotaForm.controls['jabatan'].value == 'Ketua' &&
+          !anggotaForm.controls['whatsapp'].value
         "
       >
         SAVE

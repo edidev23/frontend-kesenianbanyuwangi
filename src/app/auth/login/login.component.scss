@@ -207,9 +207,14 @@
   color: $red !important;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .bg-login {
     padding: 50px 20px;
+    display: none;
+  }
+
+  .login-form {
+    height: 100vh;
   }
 
   .form-code {

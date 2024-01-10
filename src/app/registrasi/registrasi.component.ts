@@ -38,7 +38,7 @@ export class RegistrasiComponent implements OnInit {
   desaList: any;
 
   organisasi: any;
-  userList: any;
+  userList: any = [];
   inventarisList: any;
   listDocuments: any;
 
@@ -212,6 +212,13 @@ export class RegistrasiComponent implements OnInit {
         },
         (err) => {
           this.isLoading = false;
+
+          const modalRef = this.modalService.open(ModalMessageComponent, {
+            centered: true,
+            size: 'md',
+          });
+          modalRef.componentInstance.errorMsg = 'Error';
+          modalRef.componentInstance.errors = ['Reload untuk mencoba lagi'];
         }
       );
     });
@@ -332,10 +339,23 @@ export class RegistrasiComponent implements OnInit {
   updateStatus() {
     this.isLoading = true;
     let data = this.organisasiForm.value;
-    data.status = 'Request';
+    // data.status = 'Request';
     this.apiService.saveOrganisasi(data).subscribe((res) => {
       if (res) {
         console.log(res);
+
+        let data = {
+          organisasi_id: this.organisasi.id,
+          status: 'Request',
+        };
+        this.apiService.updateStatusPendaftaran(data).subscribe(
+          (res) => {
+            if (res) {
+              // send notification
+            }
+          },
+          (error) => console.log('error')
+        );
 
         this.router.navigateByUrl('/homepage');
       }
@@ -559,7 +579,14 @@ export class RegistrasiComponent implements OnInit {
         (i) => i.jabatan == 'Sekretaris'
       );
 
-      return checkKetua && checkSekretaris ? false : true;
+      if (checkKetua && checkSekretaris) {
+        return this.userList.length ==
+          this.organisasiForm.controls.jumlah_anggota.value
+          ? false
+          : true;
+      } else {
+        return true;
+      }
     } else {
       return true;
     }

@@ -19,6 +19,7 @@
       <div class="login-form">
         <div class="box" *ngIf="signstatus == 'signin'">
           <h3>LOG IN</h3>
+          <p class="mb-3">Layanan Aplikasi Kartu Induk Kesenian Banyuwangi.</p>
           <p *ngIf="successMsg && !errorMsg" [class.text-success]="successMsg">
             {{ successMsg }}
           </p>

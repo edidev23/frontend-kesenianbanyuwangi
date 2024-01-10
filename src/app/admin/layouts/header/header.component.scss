@@ -1,0 +1,44 @@
+@import "../../../../theme/variables";
+
+.navbar {
+  display: none;
+  justify-content: flex-start;
+  padding: 1rem;
+
+  .navbar-brand {
+    margin-left: 16px;
+  }
+}
+
+.navbar-dark .navbar-toggler-icon {
+  background-image: url("/assets/img/menu-icon.png");
+}
+
+.navbar-dark .navbar-toggler {
+  border: none;
+  padding: 0.25rem;
+}
+
+.bg-dark {
+  background-color: $blue !important;
+}
+
+.navbar-dark .navbar-nav {
+  .nav-link {
+    color: $white;
+
+    fa-icon {
+      margin-right: 15px;
+    }
+  }
+
+  .nav-item {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .navbar {
+    display: flex;
+  }
+}

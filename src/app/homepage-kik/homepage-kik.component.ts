@@ -158,12 +158,13 @@ export class HomepageKikComponent implements OnInit {
     this.router.navigateByUrl('/registrasi');
   }
 
-  previewKartu() {
+  previewKartu(data) {
     const modalRef = this.modalService.open(PreviewImageComponent, {
       centered: true,
-      size: 'md',
+      size: 'lg',
     });
-    // modalRef.componentInstance.errorMsg = 'Error Upload';
+    modalRef.componentInstance.dataOrganisasi = data;
+    modalRef.componentInstance.dataDocuments = this.dataDocuments;
     // modalRef.componentInstance.errors = ['Upload Photo Max 16'];
   }
 }
