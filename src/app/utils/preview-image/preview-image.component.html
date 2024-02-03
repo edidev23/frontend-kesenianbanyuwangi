@@ -11,73 +11,53 @@
     </button>
   </div>
   <div class="card-body">
-    <div class="kartu-digital">
-      <img src="/assets/img/template.jpeg" class="img-responsive" alt="" />
+    <div id="kartu-digital" class="kartu-digital" #kikContainer>
+      <img src="/assets/img/template-2.jpeg" alt="" />
       <div class="content">
-        <table>
-          <tr>
-            <td class="label">NOMOR INDUK</td>
-            <td class="w-1">:</td>
-            <td>{{ dataOrganisasi.nomor_induk }}</td>
-          </tr>
-          <tr>
-            <td class="label">NAMA ORGANISASI</td>
-            <td class="w-1">:</td>
-            <td>{{ dataOrganisasi.nama }}</td>
-          </tr>
-          <tr>
-            <td class="label">NAMA PIMPINAN</td>
-            <td class="w-1">:</td>
-            <td>{{ dataOrganisasi.nama_ketua }}</td>
-          </tr>
-          <tr>
-            <td class="label">TANGGAL TERDAFTAR</td>
-            <td class="w-1">:</td>
-            <td>{{ formatDate(dataOrganisasi.tanggal_daftar) }}</td>
-          </tr>
-          <tr>
-            <td class="label">ALAMAT</td>
-            <td class="w-1">:</td>
-            <td>{{ dataOrganisasi.alamat }}</td>
-          </tr>
-          <tr>
-            <td class="label">NO.TELP. KETUA</td>
-            <td class="w-1">:</td>
-            <td>{{ dataOrganisasi.no_telp_ketua }}</td>
-          </tr>
-          <tr>
-            <td class="label">JENIS KESENIAN</td>
-            <td class="w-1">:</td>
-            <td>
-              {{
-                dataOrganisasi.nama_sub_kesenian
-                  ? dataOrganisasi.nama_sub_kesenian
-                  : dataOrganisasi.nama_jenis_kesenian
-              }}
-            </td>
-          </tr>
-          <tr>
-            <td class="label">MASA AKTIF</td>
-            <td class="w-1">:</td>
-            <td>
-              <ng-container *ngIf="checkExpired(dataOrganisasi.tanggal_expired)">
-                <div class="badge badge-danger">
-                  Sudah tidak berlaku sejak
-                  {{ checkExpired(dataOrganisasi.tanggal_expired) }} Lalu
-                </div>
-              </ng-container>
-              <ng-container *ngIf="!checkExpired(dataOrganisasi.tanggal_expired)">
-                {{ getTanggalBefore(dataOrganisasi.tanggal_expired) }} -
-                {{ formatDate(dataOrganisasi.tanggal_expired) }}
-              </ng-container>
-            </td>
-          </tr>
-        </table>
+        <div class="info">
+          <div class="name">
+            {{ dataOrganisasi.nama_ketua }}
+          </div>
+          <div class="ketua">Ketua</div>
+          <div class="organisasi">
+            {{ dataOrganisasi.nama }}
+          </div>
+          <div class="nomor">
+            {{ dataOrganisasi.nomor_induk }}
+          </div>
+        </div>
+      </div>
+
+      <div class="alamat">
+        {{ dataOrganisasi.alamat }}
       </div>
 
       <div class="pas-foto">
-        <img [src]="getFotoKetua()" alt="" />
+        <img [src]="imageUrl" alt="" style="object-fit: cover" />
+      </div>
+
+      <div class="qrcode">
+        <img [src]="qrcodeUrl" alt="" *ngIf="qrcodeUrl" />
+
+        <p>Aktif sampai {{ formatDate(dataOrganisasi.tanggal_expired) }}</p>
       </div>
     </div>
   </div>
+  <div class="card-footer">
+    <div class="my-3 d-flex justify-content-center">
+      <button class="btn btn-info btn-lg" (click)="generateKartuInduk()">
+        Generate Kartu Induk
+      </button>
+
+      <img [src]="imageUpload" alt="" *ngIf="imageUpload" width="100px" height="100px">
+    </div>
+  </div>
 </div>
+
+<ng-container *ngIf="cetak">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>

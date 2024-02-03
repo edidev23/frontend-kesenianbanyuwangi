@@ -637,6 +637,7 @@
       </ng-container>
 
       <button
+        [disabled]="!pasFotoPreview"
         *ngIf="tabActive == 'review'"
         class="btn btn-info btn-sm"
         (click)="saveStatusPendaftaran(tabActive)"
@@ -654,3 +655,5 @@
     </div>
   </div>
 </ng-container>
+
+<canvas #qrcode style="display: none"></canvas>

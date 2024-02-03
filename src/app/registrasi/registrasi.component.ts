@@ -170,6 +170,7 @@ export class RegistrasiComponent implements OnInit {
     });
     modalRef.componentInstance.type = 'ADD';
     modalRef.componentInstance.organisasi_id = this.organisasi.id;
+    modalRef.componentInstance.userList = this.userList;
 
     modalRef.componentInstance.emitModal.subscribe((res: any) => {
       if (res) {
@@ -186,6 +187,8 @@ export class RegistrasiComponent implements OnInit {
     });
     modalRef.componentInstance.type = 'ADD';
     modalRef.componentInstance.detailAnggota = data;
+    modalRef.componentInstance.userList = this.userList;
+    modalRef.componentInstance.organisasi_id = this.organisasi.id;
 
     modalRef.componentInstance.emitModal.subscribe((res: any) => {
       if (res) {
@@ -332,6 +335,7 @@ export class RegistrasiComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res);
         this.organisasi = res.data;
+        this.organisasiForm.controls.id.setValue(this.organisasi.id);
         this.isLoading = false;
       });
   }

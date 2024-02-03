@@ -312,8 +312,8 @@
           <ng-container *ngIf="tabActive == 'data_anggota'">
             <div class="card-border">
               <h3>Data Anggota</h3>
-              <div class="mb-3">
-                <p class="mb-0">Masukkan data anggota dalam organisasi anda.</p>
+              <div class="mb-3" *ngIf="organisasi">
+                <p class="mb-0">Masukkan data anggota dalam organisasi anda sejumlah {{ organisasi.jumlah_anggota }} Orang.</p>
                 <p class="mb-0 text-danger" *ngIf="checkAnggota()">
                   ( Data Pengurus Ketua dan Sekretaris Wajib di isi )
                 </p>
@@ -335,10 +335,11 @@
                     <thead>
                       <tr>
                         <td>No</td>
+                        <td>NIK</td>
                         <td>Nama</td>
                         <td>L/P</td>
                         <td>Umur</td>
-                        <td>Alamat</td>
+                        <!-- <td>Alamat</td> -->
                         <td>Jabatan</td>
                         <td>Kontak</td>
                         <td>Action</td>
@@ -347,22 +348,23 @@
                     <tbody>
                       <tr *ngFor="let item of userList; let i = index">
                         <td>{{ i + 1 }}</td>
+                        <td>{{ item.nik }}</td>
                         <td>{{ item.nama }}</td>
                         <td>
                           {{ item.jenis_kelamin ? item.jenis_kelamin : "-" }}
                         </td>
                         <td>{{ calculateAge(item.tanggal_lahir) }}</td>
-                        <td>{{ item.alamat ? item.alamat : "-" }}</td>
+                        <!-- <td>{{ item.alamat ? item.alamat : "-" }}</td> -->
                         <td>{{ item.jabatan }}</td>
                         <td>{{ item.whatsapp ? item.whatsapp : "-" }}</td>
                         <td>
-                          <a class="mr-3" (click)="editAnggota(i, item)">
+                          <a class="mr-3" (click)="organisasi ? editAnggota(i, item) : ''">
                             <fa-icon
                               class="text-info"
                               [icon]="faEdit"
                             ></fa-icon>
                           </a>
-                          <a (click)="deleteAnggota(i, item.id)">
+                          <a (click)="organisasi ? deleteAnggota(i, item.id) : ''">
                             <fa-icon
                               class="text-info"
                               [icon]="faDelete"
@@ -560,7 +562,7 @@
                 <div class="col-lg-12 mb-4">
                   <div class="form-group mb-0">
                     <label for="fotoKTP">
-                      Banner <span class="text-danger">*</span>
+                      Banner/ Poster Organisasi <span class="text-danger">*</span>
                     </label>
                   </div>
 

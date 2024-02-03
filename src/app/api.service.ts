@@ -38,6 +38,15 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  getImage(data) {
+    return this.http
+      .post(environment.apiUrl + `get-image`, data, {
+        headers: this.reqHeader,
+        responseType: 'blob',
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   createUser(data) {
     return this.http
       .post(environment.apiUrl + `users`, data, {
@@ -137,6 +146,14 @@ export class ApiService {
   createAnggota(data) {
     return this.http
       .post(environment.apiUrl + `anggota`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  createAnggotaLain(data) {
+    return this.http
+      .post(environment.apiUrl + `anggota-lain`, data, {
         headers: this.reqHeader,
       })
       .pipe(catchError(this.handleError));

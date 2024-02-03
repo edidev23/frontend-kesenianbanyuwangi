@@ -12,8 +12,11 @@ export class ModalAnggotaComponent implements OnInit {
   isLoading: boolean;
 
   @Input() organisasi_id: string;
+  @Input() userList: any;
   @Input() detailAnggota: any;
   @Output() emitModal: EventEmitter<any> = new EventEmitter<any>();
+
+  anggotaOrgLain: any;
 
   anggotaForm = this.fb.group({
     id: [''],
@@ -29,7 +32,7 @@ export class ModalAnggotaComponent implements OnInit {
     telepon: [''],
   });
 
-  jabatanList: any;
+  jabatanList: any = [];
   errorList: any;
 
   constructor(
@@ -39,7 +42,14 @@ export class ModalAnggotaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.jabatanList = [
+    let jabatanSelected = [];
+    if (this.userList) {
+      this.userList.map((item) => {
+        jabatanSelected.push(item.jabatan);
+      });
+    }
+
+    let listJabatan = [
       'Ketua',
       'Wakil',
       'Penasehat',
@@ -48,13 +58,30 @@ export class ModalAnggotaComponent implements OnInit {
       'Anggota',
     ];
 
+    console.log(jabatanSelected);
+
+    listJabatan.map((item) => {
+      if (jabatanSelected.indexOf(item) !== -1 && item != 'Anggota') {
+        //console.log(`${searchString} is in the array.`);
+      } else {
+        this.jabatanList.push(item);
+      }
+    });
+
     if (this.detailAnggota) {
+      if (
+        this.detailAnggota.jabatan &&
+        this.detailAnggota.jabatan != 'Anggota'
+      ) {
+        this.jabatanList.push(this.detailAnggota.jabatan);
+      }
+
       this.anggotaForm.controls.id.setValue(this.detailAnggota.id);
       this.anggotaForm.controls.nama.setValue(this.detailAnggota.nama);
       this.anggotaForm.controls.nik.setValue(this.detailAnggota.nik);
       this.anggotaForm.controls.jabatan.setValue(this.detailAnggota.jabatan);
       this.anggotaForm.controls.organisasi_id.setValue(
-        this.detailAnggota.organisasi_id.toString()
+        this.organisasi_id ? this.organisasi_id.toString() : ''
       );
       this.anggotaForm.controls.tanggal_lahir.setValue(
         this.detailAnggota.tanggal_lahir
@@ -125,8 +152,45 @@ export class ModalAnggotaComponent implements OnInit {
           this.isLoading = false;
 
           this.errorList = err.error.message;
+
+          let check = this.errorList.find(
+            (e) => e == 'Anggota Organisasi Lain.'
+          );
+
+          console.log(check, err.error);
+
+          if (check) {
+            this.anggotaOrgLain = err.error.data;
+            console.log(this.anggotaOrgLain);
+          }
         }
       );
     }
+  }
+
+  tambahAggotaOrgLain() {
+    console.log(this.anggotaOrgLain.id, this.organisasi_id);
+
+    this.isLoading = true;
+
+    let data = {
+      anggota_id: this.anggotaOrgLain.id,
+      organisasi_id: this.organisasi_id,
+    };
+
+    this.apiService.createAnggotaLain(data).subscribe(
+      (res: any) => {
+        this.isLoading = false;
+        if (res && res.data) {
+          this.emitModal.emit(res.data);
+          this.close();
+        }
+      },
+      (err) => {
+        this.isLoading = false;
+
+        this.errorList = err.error.message;
+      }
+    );
   }
 }

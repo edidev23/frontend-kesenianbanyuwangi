@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+  faIdCard,
   faPen,
   faSignInAlt,
   faSyncAlt,
@@ -13,6 +14,7 @@ import { ModalStatusComponent } from './modal-status/modal-status.component';
 import { ModalMessageComponent } from 'src/app/utils/modal-message/modal-message.component';
 import * as moment from 'moment';
 import { ModalDeleteComponent } from 'src/app/utils/modal-delete/modal-delete.component';
+import { PreviewKartuComponent } from 'src/app/utils/preview-kartu/preview-kartu.component';
 
 @Component({
   selector: 'app-homepage',
@@ -27,6 +29,7 @@ export class HomepageComponent implements OnInit {
 
   dataKesenian: any;
 
+  faCard = faIdCard;
   faPencil = faPen;
   faUpdate = faSyncAlt;
   faDelete = faTrash;
@@ -109,6 +112,14 @@ export class HomepageComponent implements OnInit {
         );
       }
     });
+  }
+
+  previewKartu(data) {
+    const modalRef = this.modalService.open(PreviewKartuComponent, {
+      centered: true,
+      size: 'lg',
+    });
+    modalRef.componentInstance.dataOrganisasi = data;
   }
 
   formatDate(date) {

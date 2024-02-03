@@ -14,7 +14,7 @@
     </div>
     <div class="modal-body">
       <form [formGroup]="anggotaForm">
-        <ng-container>
+        <ng-container *ngIf="!anggotaOrgLain">
           <div class="box">
             <div class="row" *ngIf="errorList">
               <div class="col-lg-12">
@@ -202,9 +202,32 @@
             </div>
           </div>
         </ng-container>
+
+        <ng-container *ngIf="anggotaOrgLain">
+          <div class="text-center">
+            <h3>Anggota sudah mengikuti organisasi lain.</h3>
+            <p class="mb-4">
+              Nama : <b>{{ anggotaOrgLain.nama }}</b> dengan NIK : Nama :
+              <b>{{ anggotaOrgLain.nik }}</b> sudah menjadi anggota organisasi
+              lain. Apakah anda ingin tetap menambahkan anggota tersebut ke
+              organisasi anda ?
+            </p>
+
+            <div class="text-center">
+              <button
+                class="btn btn-primary mr-3"
+                (click)="tambahAggotaOrgLain()"
+              >
+                Tambahkan
+              </button>
+
+              <button class="btn btn-danger" (click)="close()">Batal</button>
+            </div>
+          </div>
+        </ng-container>
       </form>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" *ngIf="!anggotaOrgLain">
       <button
         type="button"
         class="btn btn-outline-info width-100"

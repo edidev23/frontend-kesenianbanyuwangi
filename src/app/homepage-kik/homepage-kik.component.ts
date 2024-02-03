@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { AuthService } from '../auth/auth.service';
@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewImageComponent } from '../utils/preview-image/preview-image.component';
+import { PreviewKartuComponent } from '../utils/preview-kartu/preview-kartu.component';
 
 @Component({
   selector: 'app-homepage-kik',
@@ -56,8 +57,6 @@ export class HomepageKikComponent implements OnInit {
     this.apiService.getOrganisasiByUser(this.userID).subscribe(
       (res: any) => {
         this.isLoading = false;
-
-        console.log(res);
 
         if (res && res.data) {
           this.organisasi = res.data;
@@ -159,12 +158,10 @@ export class HomepageKikComponent implements OnInit {
   }
 
   previewKartu(data) {
-    const modalRef = this.modalService.open(PreviewImageComponent, {
+    const modalRef = this.modalService.open(PreviewKartuComponent, {
       centered: true,
       size: 'lg',
     });
     modalRef.componentInstance.dataOrganisasi = data;
-    modalRef.componentInstance.dataDocuments = this.dataDocuments;
-    // modalRef.componentInstance.errors = ['Upload Photo Max 16'];
   }
 }

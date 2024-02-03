@@ -17,6 +17,8 @@ import { ModalInventarisComponent } from 'src/app/registrasi/modal-inventaris/mo
 import { ModalDeleteComponent } from 'src/app/utils/modal-delete/modal-delete.component';
 import { ModalMessageComponent } from 'src/app/utils/modal-message/modal-message.component';
 import { environment } from 'src/environments/environment';
+import * as QRCode from 'qrcode';
+import { PreviewImageComponent } from 'src/app/utils/preview-image/preview-image.component';
 
 @Component({
   selector: 'app-verifikasi',
@@ -65,6 +67,10 @@ export class VerifikasiComponent implements OnInit {
   @ViewChild('fotoKegiatan') fotoKegiatan!: ElementRef<HTMLInputElement>;
   selectedFiles: any = [];
 
+  @ViewChild('qrcode', { static: true }) qrcodeCanvas: ElementRef;
+  qrcodeUrl: any;
+  imageUrl: any;
+
   dataValidation: any;
 
   organisasiForm = this.fb.group({
@@ -91,7 +97,7 @@ export class VerifikasiComponent implements OnInit {
     organisasi_id: [''],
     status: ['', Validators.required],
     tipe: [''],
-    keterangan: ['', Validators.required],
+    keterangan: [''],
     foto: [''],
     userid_review: [''],
     tanggal_review: [''],
@@ -609,8 +615,9 @@ export class VerifikasiComponent implements OnInit {
       status: this.checkValidasi() ? 'Allow' : 'Denny',
     };
     this.apiService.updateStatusPendaftaran(data).subscribe(
-      (res) => {
+      (res: any) => {
         if (res) {
+          this.organisasi = res.data;
           this.isLoading = false;
           this.updateStatus();
         }
@@ -630,8 +637,122 @@ export class VerifikasiComponent implements OnInit {
       });
   }
 
-  updateStatus() {
-    this.router.navigateByUrl('/admin/homepage');
+  async updateStatus() {
+    if (this.organisasi.status == 'Allow') {
+      this.qrcodeUrl = await this.generateQRCode(this.organisasi.kode_kartu);
+
+      if (this.qrcodeUrl) {
+        const modalRef = this.modalService.open(PreviewImageComponent, {
+          centered: true,
+          size: 'lg',
+          backdrop: 'static',
+        });
+        modalRef.componentInstance.imageUrl = this.pasFotoPreview;
+        modalRef.componentInstance.qrcodeUrl = this.qrcodeUrl;
+        modalRef.componentInstance.dataOrganisasi = this.organisasi;
+
+        modalRef.componentInstance.emitModal.subscribe((res: any) => {
+          if (res) {
+            this.router.navigateByUrl('/admin/homepage');
+          }
+        });
+      }
+    } else {
+      this.router.navigateByUrl('/admin/homepage');
+    }
+  }
+
+  async generateQRCode(data): Promise<void> {
+    const canvas = this.qrcodeCanvas.nativeElement;
+    const context = canvas.getContext('2d');
+
+    const qrCodeData = data;
+
+    // Set the canvas dimensions without displaying it
+    canvas.width = 300; // Set your desired width
+    canvas.height = 300; // Set your desired height
+
+    // Generate QR code using qrcode library
+    await QRCode.toCanvas(canvas, qrCodeData);
+
+    // Customize styling
+    context.fillStyle = 'red'; // Set your desired fill color
+    context.strokeStyle = 'blue'; // Set your desired stroke color
+
+    // Add any other styling customizations
+
+    // Convert the canvas to a data URL
+    const dataURL = canvas.toDataURL('image/png');
+    console.log(dataURL);
+
+    return dataURL;
+  }
+
+  getImageBase64(url) {
+    this.apiService
+      .getImage({
+        url: url,
+      })
+      .subscribe(async (res) => {
+        const blob = new Blob([res], { type: 'image/jpg' });
+
+        // this.imageUrl = await this.blobToImage(blob);
+        let image = await this.blobToBase64(blob);
+        this.pasFotoPreview = await this.cropImage(image, 613, 700);
+      });
+  }
+
+  private blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  cropImage(
+    base64String: string,
+    targetWidth: number,
+    targetHeight: number
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = base64String;
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size to target dimensions
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        // Calculate the scaling factor for "object-fit: cover"
+        const scaleFactor = Math.max(
+          targetWidth / image.width,
+          targetHeight / image.height
+        );
+
+        // Calculate the cropped dimensions
+        const croppedWidth = image.width * scaleFactor;
+        const croppedHeight = image.height * scaleFactor;
+
+        // Calculate the crop position to center the image
+        const cropX = (croppedWidth - targetWidth) / 2;
+        const cropY = (croppedHeight - targetHeight) / 2;
+
+        // Draw the cropped image onto the canvas
+        ctx.drawImage(image, -cropX, -cropY, croppedWidth, croppedHeight);
+
+        // Convert the canvas to a Base64 string
+        const croppedBase64String = canvas.toDataURL('image/png');
+
+        resolve(croppedBase64String);
+      };
+
+      image.onerror = reject;
+    });
   }
 
   getOrganisasi() {
@@ -739,12 +860,14 @@ export class VerifikasiComponent implements OnInit {
           this.isLoading = false;
         }
 
-        this.listDocuments.map((item) => {
+        this.listDocuments.map(async (item) => {
           let linkImage = `${environment.url}uploads/organisasi/${item.organisasi_id}`;
           if (item.tipe == 'KTP') {
             this.fotoKTPPreview = `${linkImage}/${item.image}`;
           } else if (item.tipe == 'PAS-FOTO') {
-            this.pasFotoPreview = `${linkImage}/${item.image}`;
+            await this.getImageBase64(
+              `uploads/organisasi/${item.organisasi_id}/${item.image}`
+            );
           } else if (item.tipe == 'BANNER') {
             this.bannerPreview = `${linkImage}/${item.image}`;
           }

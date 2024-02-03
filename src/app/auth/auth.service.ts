@@ -120,6 +120,12 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
+  verifyCode(data) {
+    return this.http
+      .post(environment.apiUrl + `verify-code`, data)
+      .pipe(catchError(this.handleError));
+  }
+
   handleError(error: HttpErrorResponse) {
     return throwError(error);
   }

@@ -103,6 +103,14 @@
 
               <ng-container *ngIf="item.status == 'Allow'">
                 <button
+                  title="Lihat kartu"
+                  class="btn text-info mr-2"
+                  (click)="previewKartu(item)"
+                >
+                  <fa-icon [icon]="faCard"></fa-icon>
+                </button>
+
+                <button
                   title="Verifikasi Data"
                   class="btn text-info mr-2"
                   routerLink="/admin/verifikasi/{{ item.id }}"

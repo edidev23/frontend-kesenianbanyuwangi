@@ -1,0 +1,22 @@
+<div class="card">
+  <div class="card-header">
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <ng-container *ngIf="dataOrganisasi.kartu">
+      <img [src]="imageUrl" alt="kartu digital" />
+    </ng-container>
+
+    <ng-container *ngIf="!dataOrganisasi.kartu">
+        <h3 class="my-4 text-center">Kartu Belum Tersedia.</h3>
+    </ng-container>
+  </div>
+</div>

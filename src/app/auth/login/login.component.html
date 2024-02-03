@@ -116,6 +116,17 @@
 
             <div class="form-group">
               <input
+                formControlName="whatsapp"
+                placeholder="Whatsapp"
+                type="text"
+                class="form-control"
+                id="whatsapp"
+                name="whatsapp"
+              />
+            </div>
+
+            <div class="form-group">
+              <input
                 formControlName="password"
                 placeholder="Password"
                 class="form-control"
@@ -151,6 +162,88 @@
               </p>
             </div>
           </form>
+        </div>
+
+        <div class="box" *ngIf="signstatus == 'verify'">
+          <h3>VERIFICATION</h3>
+          <p *ngIf="successMsg && !errorMsg" [class.text-success]="successMsg">
+            {{ successMsg }}
+          </p>
+
+          <p *ngIf="errorMsg" [class.text-error]="errorMsg">{{ errorMsg }}</p>
+
+          <p class="mb-3">
+            Masukkan kode yang dikirim melalui email: {{ email }}
+          </p>
+
+          <div class="form">
+            <div class="form-group form-code mb-4">
+              <input
+                type="number"
+                (contextmenu)="onContextMenu($event)"
+                (paste)="onPaste($event, 1)"
+                (keyup)="onInputKeydown($event, 1)"
+                #code1
+                [(ngModel)]="value_code1"
+                class="form-control"
+                (click)="selectAll(code1)"
+              />
+              <input
+                type="number"
+                (contextmenu)="onContextMenu($event)"
+                (paste)="onPaste($event, 2)"
+                (keyup)="onInputKeydown($event, 2)"
+                #code2
+                [(ngModel)]="value_code2"
+                class="form-control"
+                (click)="selectAll(code2)"
+              />
+              <input
+                type="number"
+                (contextmenu)="onContextMenu($event)"
+                (paste)="onPaste($event, 3)"
+                (keyup)="onInputKeydown($event, 3)"
+                #code3
+                [(ngModel)]="value_code3"
+                class="form-control"
+                (click)="selectAll(code3)"
+              />
+              <input
+                type="number"
+                (contextmenu)="onContextMenu($event)"
+                (paste)="onPaste($event, 4)"
+                (keyup)="onInputKeydown($event, 4)"
+                #code4
+                [(ngModel)]="value_code4"
+                class="form-control"
+                (click)="selectAll(code4)"
+              />
+              <input
+                type="number"
+                (contextmenu)="onContextMenu($event)"
+                (paste)="onPaste($event, 5)"
+                (keyup)="onInputKeydown($event, 5)"
+                #code5
+                [(ngModel)]="value_code5"
+                class="form-control"
+                (click)="selectAll(code5)"
+              />
+              <input
+                type="number"
+                (contextmenu)="onContextMenu($event)"
+                (paste)="onPaste($event, 6)"
+                (keyup)="onInputKeydown($event, 6)"
+                #code6
+                [(ngModel)]="value_code6"
+                class="form-control"
+                (click)="selectAll(code6)"
+              />
+            </div>
+
+            <button class="btn btn-info w-100 mb-3" (click)="verifycode()">
+              {{ btnverify }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
