@@ -39,8 +39,8 @@ export class RegistrasiComponent implements OnInit {
 
   organisasi: any;
   userList: any = [];
-  inventarisList: any;
-  listDocuments: any;
+  inventarisList: any = [];
+  listDocuments: any = [];
 
   dataVerifikasi: any;
 
@@ -92,6 +92,8 @@ export class RegistrasiComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+
     this.activeRoute.queryParamMap.subscribe((params: any) => {
       // this.type = params.get('type') ? params.get('type') : 'Regular';
       this.tabActive = params.get('tabActive')
@@ -294,6 +296,8 @@ export class RegistrasiComponent implements OnInit {
   }
 
   next(tab: string) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     if (tab == 'general') {
       this.tabActive = 'data_organisasi';
     } else if (tab == 'data_organisasi') {
@@ -312,6 +316,8 @@ export class RegistrasiComponent implements OnInit {
   }
 
   prev(tab: string) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     if (tab == 'data_organisasi') {
       this.tabActive = 'general';
     } else if (tab == 'data_anggota') {

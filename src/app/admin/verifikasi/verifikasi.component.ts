@@ -115,6 +115,8 @@ export class VerifikasiComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     let resp = await this.authService.getToken();
 
     if (!resp) {
@@ -354,6 +356,8 @@ export class VerifikasiComponent implements OnInit {
   }
 
   next(tab: string) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     if (tab == 'general') {
       this.tabActive = 'data_organisasi';
       let check = this.dataValidation
@@ -589,6 +593,7 @@ export class VerifikasiComponent implements OnInit {
   }
 
   prev(tab: string) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (tab == 'data_organisasi') {
       this.tabActive = 'general';
     } else if (tab == 'data_anggota') {
@@ -689,6 +694,7 @@ export class VerifikasiComponent implements OnInit {
   }
 
   getImageBase64(url) {
+    this.isLoading = true;
     this.apiService
       .getImage({
         url: url,
@@ -699,6 +705,10 @@ export class VerifikasiComponent implements OnInit {
         // this.imageUrl = await this.blobToImage(blob);
         let image = await this.blobToBase64(blob);
         this.pasFotoPreview = await this.cropImage(image, 613, 700);
+
+        if (this.pasFotoPreview) {
+          this.isLoading = false;
+        }
       });
   }
 

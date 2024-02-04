@@ -625,9 +625,26 @@
         </button>
       </ng-container>
 
-      <ng-container *ngIf="tabActive != 'general' && tabActive != 'review'">
+      <ng-container
+        *ngIf="
+          tabActive != 'general' &&
+          tabActive != 'review' &&
+          tabActive != 'data_pendukung'
+        "
+      >
         <button
           [disabled]="reviewForm.invalid"
+          class="btn btn-info btn-sm"
+          (click)="next(tabActive)"
+        >
+          <span> Selanjutnya </span>
+          <i class="icon icon-arrow-right ml-2"></i>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="tabActive == 'data_pendukung'">
+        <button
+          [disabled]="!pasFotoPreview || reviewForm.invalid"
           class="btn btn-info btn-sm"
           (click)="next(tabActive)"
         >

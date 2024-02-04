@@ -50,7 +50,7 @@ export class PreviewImageComponent implements OnInit {
 
     if (element) {
       html2canvas(element, {
-        scale: 5,
+        scale: 3,
         // foreignObjectRendering: true,
         allowTaint: true, // Set to true if your images are cross-origin
         useCORS: true, // Set to true if your images are cross-origin
