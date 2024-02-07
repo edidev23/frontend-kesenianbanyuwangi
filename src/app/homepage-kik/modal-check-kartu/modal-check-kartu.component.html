@@ -1,0 +1,110 @@
+<div class="modal-content">
+  <div class="theme-form">
+    <div class="modal-header">
+      <h5 class="modal-title">Check Kartu Anda</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngIf="!organisasi">
+        <div class="box">
+          <div class="row" *ngIf="errorMsg">
+            <div class="col-lg-12">
+              <div class="alert alert-danger">
+                <p>{{ errorMsg }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="nomor_induk" class="form-label">
+                  Masukkan Nomor Kartu Induk
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  id="nomor_induk"
+                  type="text"
+                  class="form-control"
+                  placeholder="Nomor Kartu Induk Lama"
+                  [(ngModel)]="nomor_induk"
+                />
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="nama_ketua" class="form-label">
+                  Nama Ketua <span class="text-danger">*</span>
+                </label>
+                <input
+                  id="nama_ketua"
+                  type="text"
+                  class="form-control"
+                  placeholder="Nama Ketua"
+                  [(ngModel)]="nama_ketua"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="organisasi">
+        <ng-container
+          *ngIf="organisasi.status && checkExpired(organisasi.tanggal_expired)"
+        >
+          Mohon maaf kartu anda sudah tidak aktif. Perbarui data dan Lanjutkan
+          pembuatan kartu induk kesenian digital ?
+        </ng-container>
+
+        <ng-container
+          *ngIf="organisasi.status && !checkExpired(organisasi.tanggal_expired)"
+        >
+          Data ditemukan. Lanjutkan pembaruan kartu induk kesenian digital ?
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-info width-100"
+        data-dismiss="modal"
+        (click)="close()"
+      >
+        CANCEL
+      </button>
+      <button
+        *ngIf="!organisasi"
+        [disabled]="!nomor_induk || !nama_ketua"
+        type="button"
+        class="btn btn-info width-100"
+        (click)="check()"
+      >
+        CARI
+      </button>
+
+      <button
+        class="btn btn-info width-100"
+        *ngIf="organisasi"
+        (click)="save()"
+      >
+        Lanjutkan
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>

@@ -104,6 +104,7 @@ export class VerifikasiComponent implements OnInit {
   });
 
   organisasiID: string;
+  tanggal_cetak_kartu: string;
 
   constructor(
     private fb: FormBuilder,
@@ -618,6 +619,9 @@ export class VerifikasiComponent implements OnInit {
     let data = {
       organisasi_id: this.organisasi.id,
       status: this.checkValidasi() ? 'Allow' : 'Denny',
+      tanggal_cetak_kartu: this.checkValidasi()
+        ? this.tanggal_cetak_kartu
+        : null,
     };
     this.apiService.updateStatusPendaftaran(data).subscribe(
       (res: any) => {
@@ -629,6 +633,25 @@ export class VerifikasiComponent implements OnInit {
       },
       (error) => console.log('error')
     );
+  }
+
+  async generateDate(dateSpesific) {
+    if (dateSpesific) {
+      let currentDate = moment(dateSpesific);
+      let futureDate = currentDate.add(2, 'years');
+
+      const isCurrentDateAfterSpecificDate = moment().isAfter(futureDate);
+
+      if (isCurrentDateAfterSpecificDate) {
+        // tanggal sekarang lebih besar tanggal expired
+        await this.generateDate(futureDate);
+      } else {
+        // tanggal expired lebih besar dari sekarang
+        this.tanggal_cetak_kartu = moment(dateSpesific).format('YYYY-MM-DD');
+      }
+    } else {
+      this.tanggal_cetak_kartu = moment(dateSpesific).format('YYYY-MM-DD');
+    }
   }
 
   saveOrganisasi() {
@@ -777,6 +800,8 @@ export class VerifikasiComponent implements OnInit {
         if (res && res.data) {
           this.organisasi = res.data;
           this.getAnggota(this.organisasi.id);
+
+          this.generateDate(this.organisasi.tanggal_cetak_kartu);
 
           let dataOrganisasi = res.data;
 

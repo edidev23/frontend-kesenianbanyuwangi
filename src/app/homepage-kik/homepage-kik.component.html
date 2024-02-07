@@ -93,7 +93,7 @@
               </p>
             </ng-container>
 
-            <table class="table table-hover">
+            <table class="table table-hover" *ngIf="organisasi">
               <tr>
                 <td colspan="3" align="center">KARTU INDUK KESENIAN</td>
               </tr>
@@ -143,7 +143,7 @@
                   >
                     <div class="badge badge-danger">
                       Sudah tidak berlaku sejak
-                      {{ checkExpired(organisasi.tanggal_expired) }} Lalu
+                      {{ organisasi.tanggal_expired | dateAgo }}
                     </div>
                   </ng-container>
                   <ng-container
@@ -164,8 +164,7 @@
                 </td>
               </tr>
             </table>
-          </div>
-          <div class="col-lg-5">
+
             <button
               [disabled]="!organisasi.kartu"
               class="btn btn-info btn-sm"
@@ -178,12 +177,35 @@
       </ng-container>
 
       <ng-container *ngIf="!isLoading && !organisasi">
-        <h3>Anda belum terdaftar dalam Kartu Induk Kesenian.</h3>
+        <div class="row">
+          <div class="col-lg-6 mb-3">
+            <div class="card card-body card-custom">
+              <h3>Anda belum terdaftar dalam Kartu Induk Kesenian ?</h3>
 
-        <p>Lakukan Pendaftaran Kartu induk kesenian</p>
-        <button class="btn btn-info" routerLink="/registrasi">
-          Daftar Sekarang
-        </button>
+              <p class="mb-3">
+                Lakukan Pendaftaran Kartu Induk Kesenian dengan Mudah melalui
+                aplikasi <b>"Kartu Kesenian Digital"</b>.
+              </p>
+              <button class="btn btn-info" routerLink="/registrasi">
+                Daftar Sekarang
+              </button>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="card card-body card-custom">
+              <h3>Anda sudah terdaftar sebelumnya ?</h3>
+
+              <p class="mb-3">
+                Jika anda sudah mempunyai Kartu Induk Kesenian, Segera perbarui
+                dengan layanan <b>"Kartu Kesenian Digital"</b>.
+              </p>
+              <button class="btn btn-info" (click)="checkKartu()">
+                Perbarui Kartu Digital
+              </button>
+            </div>
+          </div>
+        </div>
       </ng-container>
     </div>
   </div>

@@ -12,11 +12,13 @@
   </div>
   <div class="card-body">
     <ng-container *ngIf="dataOrganisasi.kartu">
-      <img [src]="imageUrl" alt="kartu digital" />
+      <div class="status-kartu">
+        <img [src]="imageUrl" alt="kartu digital" />
+      </div>
     </ng-container>
 
     <ng-container *ngIf="!dataOrganisasi.kartu">
-        <h3 class="my-4 text-center">Kartu Belum Tersedia.</h3>
+      <h3 class="my-4 text-center">Kartu Belum Tersedia.</h3>
     </ng-container>
   </div>
 </div>

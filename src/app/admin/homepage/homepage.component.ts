@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   faIdCard,
   faPen,
-  faSignInAlt,
   faSyncAlt,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +14,9 @@ import { ModalMessageComponent } from 'src/app/utils/modal-message/modal-message
 import * as moment from 'moment';
 import { ModalDeleteComponent } from 'src/app/utils/modal-delete/modal-delete.component';
 import { PreviewKartuComponent } from 'src/app/utils/preview-kartu/preview-kartu.component';
+import { ImportModalComponent } from './import-modal/import-modal.component';
+import * as QRCode from 'qrcode';
+import { PreviewImageComponent } from 'src/app/utils/preview-image/preview-image.component';
 
 @Component({
   selector: 'app-homepage',
@@ -33,6 +35,10 @@ export class HomepageComponent implements OnInit {
   faPencil = faPen;
   faUpdate = faSyncAlt;
   faDelete = faTrash;
+
+  @ViewChild('qrcode', { static: true }) qrcodeCanvas: ElementRef;
+  qrcodeUrl: any;
+  imageUrl: any;
 
   constructor(
     private modalService: NgbModal,
@@ -68,6 +74,7 @@ export class HomepageComponent implements OnInit {
         this.dataKesenian = res.data
           .filter(
             (d) =>
+              d.status == 'DataLama' ||
               d.status == 'Request' ||
               d.status == 'Allow' ||
               d.status == 'Denny'
@@ -77,7 +84,18 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  importData() {
+    const modalRef = this.modalService.open(ImportModalComponent, {
+      centered: true,
+      size: 'lg',
+    });
+    modalRef.componentInstance.type = 'ADD';
+
+    modalRef.componentInstance.emitModal.subscribe(async (res: any) => {});
+  }
+
   modalUpdate(item) {
+    /// perlu perbaikan
     const modalRef = this.modalService.open(ModalStatusComponent, {
       centered: true,
       size: 'lg',
@@ -88,28 +106,99 @@ export class HomepageComponent implements OnInit {
       if (res) {
         this.isLoading = true;
 
-        let data = {
-          organisasi_id: item.id,
-          status: 'Update',
-        };
-        this.apiService.updateStatusPendaftaran(data).subscribe(
-          (res) => {
-            if (res) {
-              this.getData();
+        try {
+          let data = {
+            organisasi_id: item.id,
+            status: 'Update',
+            tanggal_cetak_kartu: res.tanggal_cetak_kartu,
+          };
+          this.apiService.updateStatusPendaftaran(data).subscribe(
+            async (orgUpdate: any) => {
+              if (orgUpdate) {
+                // update kartu
+                let qrcodeUrl: any = await this.generateQRCode(
+                  orgUpdate.data.kode_kartu
+                );
+                let imageUrl;
+
+                console.log(orgUpdate);
+
+                this.apiService
+                  .getDocument(orgUpdate.data.id)
+                  .subscribe((res: any) => {
+                    if (res && res.data && res.data) {
+                      let listDocuments = res.data;
+
+                      listDocuments.map(async (item) => {
+                        if (item.tipe == 'PAS-FOTO') {
+                          this.apiService
+                            .getImage({
+                              url: `uploads/organisasi/${item.organisasi_id}/${item.image}`,
+                            })
+                            .subscribe(async (res) => {
+                              const blob = new Blob([res], {
+                                type: 'image/jpg',
+                              });
+
+                              // this.imageUrl = await this.blobToImage(blob);
+                              let image = await this.blobToBase64(blob);
+                              imageUrl = await this.cropImage(image, 613, 700);
+
+                              if (qrcodeUrl && imageUrl) {
+                                this.isLoading = false;
+
+                                const modalRef = this.modalService.open(
+                                  PreviewImageComponent,
+                                  {
+                                    centered: true,
+                                    size: 'lg',
+                                    backdrop: 'static',
+                                  }
+                                );
+                                modalRef.componentInstance.imageUrl = imageUrl;
+                                modalRef.componentInstance.qrcodeUrl =
+                                  qrcodeUrl;
+                                modalRef.componentInstance.dataOrganisasi =
+                                  orgUpdate.data;
+
+                                modalRef.componentInstance.emitModal.subscribe(
+                                  (res: any) => {
+                                    if (res) {
+                                      this.getData();
+                                      this.isLoading = false;
+                                    }
+                                  }
+                                );
+                              }
+                            });
+                        }
+                      });
+                    }
+                  });
+              }
+            },
+            (err) => {
+              console.log(err);
               this.isLoading = false;
+              const modalRef = this.modalService.open(ModalMessageComponent, {
+                centered: true,
+                size: 'md',
+              });
+              modalRef.componentInstance.errorMsg = 'Perpanjang kartu Error';
+              modalRef.componentInstance.errors = err.error.message;
             }
-          },
-          (err) => {
-            console.log(err);
-            this.isLoading = false;
-            const modalRef = this.modalService.open(ModalMessageComponent, {
-              centered: true,
-              size: 'md',
-            });
-            modalRef.componentInstance.errorMsg = 'Perpanjang kartu Error';
-            modalRef.componentInstance.errors = err.error.message;
-          }
-        );
+          );
+        } catch (error) {
+          console.error('Error formatting date:', error);
+
+          this.isLoading = false;
+          const modalRef = this.modalService.open(ModalMessageComponent, {
+            centered: true,
+            size: 'md',
+          });
+          modalRef.componentInstance.errorMsg = 'Perpanjang kartu Error';
+          modalRef.componentInstance.errors = error;
+        }
       }
     });
   }
@@ -184,6 +273,104 @@ export class HomepageComponent implements OnInit {
           modalRef.componentInstance.errors = err.error.message;
         }
       );
+    });
+  }
+
+  async generateQRCode(data): Promise<void> {
+    const canvas = this.qrcodeCanvas.nativeElement;
+    const context = canvas.getContext('2d');
+
+    const qrCodeData = data;
+
+    // Set the canvas dimensions without displaying it
+    canvas.width = 300; // Set your desired width
+    canvas.height = 300; // Set your desired height
+
+    // Generate QR code using qrcode library
+    await QRCode.toCanvas(canvas, qrCodeData);
+
+    // Customize styling
+    context.fillStyle = 'red'; // Set your desired fill color
+    context.strokeStyle = 'blue'; // Set your desired stroke color
+
+    // Add any other styling customizations
+
+    // Convert the canvas to a data URL
+    const dataURL = canvas.toDataURL('image/png');
+    console.log(dataURL);
+
+    return dataURL;
+  }
+
+  getImageBase64(url) {
+    this.isLoading = true;
+    this.apiService
+      .getImage({
+        url: url,
+      })
+      .subscribe(async (res) => {
+        const blob = new Blob([res], { type: 'image/jpg' });
+
+        // this.imageUrl = await this.blobToImage(blob);
+        let image = await this.blobToBase64(blob);
+        this.imageUrl = await this.cropImage(image, 613, 700);
+
+        if (this.imageUrl) {
+          this.isLoading = false;
+        }
+      });
+  }
+
+  private blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  cropImage(
+    base64String: string,
+    targetWidth: number,
+    targetHeight: number
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = base64String;
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size to target dimensions
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        // Calculate the scaling factor for "object-fit: cover"
+        const scaleFactor = Math.max(
+          targetWidth / image.width,
+          targetHeight / image.height
+        );
+
+        // Calculate the cropped dimensions
+        const croppedWidth = image.width * scaleFactor;
+        const croppedHeight = image.height * scaleFactor;
+
+        // Calculate the crop position to center the image
+        const cropX = (croppedWidth - targetWidth) / 2;
+        const cropY = (croppedHeight - targetHeight) / 2;
+
+        // Draw the cropped image onto the canvas
+        ctx.drawImage(image, -cropX, -cropY, croppedWidth, croppedHeight);
+
+        // Convert the canvas to a Base64 string
+        const croppedBase64String = canvas.toDataURL('image/png');
+
+        resolve(croppedBase64String);
+      };
+
+      image.onerror = reject;
     });
   }
 }

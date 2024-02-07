@@ -71,6 +71,14 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  getJenisKesenianAll() {
+    return this.http
+      .get(environment.apiUrl + `jenis-kesenian-all`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   getJenisKesenian() {
     return this.http
       .get(environment.apiUrl + `jenis-kesenian`, {
@@ -122,6 +130,22 @@ export class ApiService {
   saveOrganisasi(data) {
     return this.http
       .post(environment.apiUrl + `save-organisasi-user`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  checkOrganisasi(data) {
+    return this.http
+      .post(environment.apiUrl + `check-organisasi`, data, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  importData(data) {
+    return this.http
+      .post(environment.apiUrl + `import-data`, data, {
         headers: this.reqHeader,
       })
       .pipe(catchError(this.handleError));
@@ -274,6 +298,14 @@ export class ApiService {
   getWilayah(id = null) {
     return this.http
       .get(environment.apiUrl + `wilayah?id=${id}`, {
+        headers: this.reqHeader,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  getWilayahALl() {
+    return this.http
+      .get(environment.apiUrl + `wilayah-all`, {
         headers: this.reqHeader,
       })
       .pipe(catchError(this.handleError));

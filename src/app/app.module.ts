@@ -8,9 +8,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomepageKikComponent } from './homepage-kik/homepage-kik.component';
 import { LayoutsModule } from './admin/layouts/layouts.module';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { ModalCheckKartuComponent } from './homepage-kik/modal-check-kartu/modal-check-kartu.component';
+import { UtilsModule } from './utils/utils.module';
 
 @NgModule({
-  declarations: [AppComponent, HomepageKikComponent],
+  declarations: [AppComponent, HomepageKikComponent, ModalCheckKartuComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -18,6 +20,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     LayoutsModule,
+    UtilsModule
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],

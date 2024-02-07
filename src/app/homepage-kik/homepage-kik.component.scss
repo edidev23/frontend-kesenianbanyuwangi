@@ -16,3 +16,15 @@
 .w-1 {
   width: 1px;
 }
+
+.card-custom {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  h3 {
+    margin-bottom: 20px;
+  }
+}

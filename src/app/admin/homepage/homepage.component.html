@@ -4,7 +4,19 @@
 
   <div class="main-content">
     <div class="content table-responsive pt-5">
-      <h3 class="mb-3">Data Induk Kesenian</h3>
+      <div class="row">
+        <div class="col-lg-6">
+          <h3 class="mb-3">Data Induk Kesenian</h3>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-lg-6">
+          <button class="btn btn-info" (click)="importData()">
+            Import data kesenian
+          </button>
+        </div>
+      </div>
 
       <table class="table table-bordered">
         <thead>
@@ -28,12 +40,14 @@
             <td>
               {{ item.nama }}
             </td>
-            <td align="center">
+            <td>
               {{ item.nomor_induk ? item.nomor_induk : "-" }}
             </td>
             <td>
               {{ item.nama_jenis_kesenian }}
-              {{ item.nama_sub_kesenian ? " - " + item.nama_sub_kesenian : "-" }}
+              {{
+                item.nama_sub_kesenian ? " - " + item.nama_sub_kesenian : "-"
+              }}
             </td>
             <td>
               {{ item.alamat }}
@@ -88,6 +102,15 @@
                   <div class="badge badge-info">Perpanjangan</div>
                 </ng-container>
               </ng-container>
+              <ng-container *ngIf="item.status == 'DataLama'">
+                <div class="badge badge-info">Data Lama</div>
+
+                <ng-container
+                  *ngIf="item.status && checkExpired(item.tanggal_expired)"
+                >
+                  <div class="badge badge-warning text-white">Expired</div>
+                </ng-container>
+              </ng-container>
             </td>
 
             <td>
@@ -119,7 +142,7 @@
                 </button>
 
                 <button
-                  [disabled]="!checkExpired(item.tanggal_expired)"
+                  [disabled]="!checkExpired(item.tanggal_expired) && item.kartu"
                   class="btn text-info"
                   (click)="modalUpdate(item)"
                   title="Perpanjang kartu"
@@ -142,6 +165,8 @@
     </div>
   </div>
 </div>
+
+<canvas #qrcode style="display: none"></canvas>
 
 <ng-container *ngIf="isLoading">
   <div class="spinner-wrapper">

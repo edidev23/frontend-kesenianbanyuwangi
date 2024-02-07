@@ -18,6 +18,13 @@ const routes: Routes = [
       import('./registrasi/registrasi.module').then((m) => m.RegistrasiModule),
   },
   {
+    path: 'pembaruan-kartu',
+    loadChildren: () =>
+      import('./pembaruan-kartu/pembaruan-kartu.module').then(
+        (m) => m.PembaruanKartuModule
+      ),
+  },
+  {
     path: 'admin/homepage',
     loadChildren: () =>
       import('./admin/homepage/homepage.module').then((m) => m.HomepageModule),

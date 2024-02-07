@@ -50,8 +50,8 @@
           <td>
             :
             <b>
-              {{ formatDate(detail.tanggal_expired) }} -
-              {{ updateTanggal(detail.tanggal_expired) }}
+              {{ tanggal_cetak_kartu }} -
+              {{ tanggal_expired }}
             </b>
           </td>
         </tr>
@@ -66,7 +66,12 @@
       >
         CANCEL
       </button>
-      <button type="button" class="btn btn-info width-100" (click)="save()">
+      <button
+        type="button"
+        class="btn btn-info width-100"
+        (click)="save()"
+        [disabled]="!tanggal_cetak_kartu_format"
+      >
         SAVE
       </button>
     </div>

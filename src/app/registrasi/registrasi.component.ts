@@ -92,7 +92,7 @@ export class RegistrasiComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     this.activeRoute.queryParamMap.subscribe((params: any) => {
       // this.type = params.get('type') ? params.get('type') : 'Regular';

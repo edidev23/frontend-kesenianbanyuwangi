@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-import { environment } from 'src/environments/environment';
 import html2canvas from 'html2canvas';
 import { ApiService } from 'src/app/api.service';
 
@@ -32,21 +31,24 @@ export class PreviewImageComponent implements OnInit {
   constructor(private modalService: NgbModal, private apiService: ApiService) {}
 
   async ngOnInit(): Promise<void> {
-    this.dataOrganisasi.nama = this.dataOrganisasi.nama.length > 60
-    ? this.dataOrganisasi.nama.substring(0, 60)
-    : this.dataOrganisasi.nama;
+    this.dataOrganisasi.nama =
+      this.dataOrganisasi.nama.length > 60
+        ? this.dataOrganisasi.nama.substring(0, 60)
+        : this.dataOrganisasi.nama;
 
-    this.dataOrganisasi.alamat = this.dataOrganisasi.alamat.length > 100
-    ? this.dataOrganisasi.alamat.substring(0, 100)
-    : this.dataOrganisasi.alamat;
-    // setTimeout(() => {
-    //   this.generateKIKImage();
-    // }, 1000);
+    this.dataOrganisasi.alamat =
+      this.dataOrganisasi.alamat.length > 100
+        ? this.dataOrganisasi.alamat.substring(0, 100)
+        : this.dataOrganisasi.alamat;
+  
   }
 
   generateKartuInduk() {
-    const element = this.kikContainer.nativeElement;
     this.cetak = true;
+
+    console.log(this.cetak);
+
+    const element = this.kikContainer.nativeElement;
 
     if (element) {
       html2canvas(element, {
@@ -98,14 +100,6 @@ export class PreviewImageComponent implements OnInit {
   close() {
     this.emitModal.emit(true);
     this.modalService.dismissAll();
-  }
-
-  getTanggalBefore(date) {
-    const currentDate = moment(date);
-    const dateAfterTwoYears = currentDate.subtract(2, 'years');
-    const formattedDate = dateAfterTwoYears.format('YYYY-MM-DD');
-
-    return this.formatDate(formattedDate);
   }
 
   formatDate(date) {

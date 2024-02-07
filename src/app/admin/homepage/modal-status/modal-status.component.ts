@@ -13,10 +13,55 @@ export class ModalStatusComponent implements OnInit {
   @Input() detail: any;
   @Output() emitModal: EventEmitter<any> = new EventEmitter<any>();
 
+  tanggal_cetak_kartu: string;
+  tanggal_expired: string;
+  tanggal_cetak_kartu_format: string;
+
   constructor(public modalService: NgbModal) {}
 
   ngOnInit(): void {
-    console.log(this.detail);
+    if (this.detail) {
+      this.generateDate(this.detail.tanggal_cetak_kartu);
+    }
+  }
+
+  generateDate(dateSpesific) {
+    if (dateSpesific) {
+      let currentDate = moment(dateSpesific);
+      let futureDate = currentDate.add(2, 'years');
+
+      const isCurrentDateAfterSpecificDate = moment().isAfter(futureDate);
+
+      if (isCurrentDateAfterSpecificDate) {
+        // tanggal sekarang lebih besar tanggal expired
+        this.generateDate(futureDate);
+      } else {
+        // tanggal expired lebih besar dari sekarang
+        let date = {
+          tanggal_cetak_kartu: moment(dateSpesific).format('DD-MM-YYYY'),
+          tanggal_expired: moment(futureDate).format('DD-MM-YYYY'),
+        };
+        this.tanggal_cetak_kartu = date.tanggal_cetak_kartu;
+        this.tanggal_expired = date.tanggal_expired;
+
+        this.tanggal_cetak_kartu_format =
+          moment(dateSpesific).format('YYYY-MM-DD');
+      }
+    } else {
+      let currentDate = moment();
+      let futureDate = currentDate.add(2, 'years');
+
+      let date = {
+        tanggal_cetak_kartu: moment(currentDate).format('DD-MM-YYYY'),
+        tanggal_expired: moment(futureDate).format('DD-MM-YYYY'),
+      };
+
+      this.tanggal_cetak_kartu = date.tanggal_cetak_kartu;
+      this.tanggal_expired = date.tanggal_expired;
+
+      this.tanggal_cetak_kartu_format =
+        moment(dateSpesific).format('YYYY-MM-DD');
+    }
   }
 
   close() {
@@ -24,34 +69,14 @@ export class ModalStatusComponent implements OnInit {
   }
 
   save() {
-    this.emitModal.emit(true);
+    let data = {
+      tanggal_cetak_kartu: this.tanggal_cetak_kartu_format,
+    };
+    this.emitModal.emit(data);
     this.close();
   }
 
-  updateTanggal(date) {
-    const currentDate = moment(date);
-    const dateAfterTwoYears = currentDate.add(2, 'years');
-    const formattedDate = dateAfterTwoYears.format('YYYY-MM-DD');
-
-    return this.formatDate(formattedDate);
-  }
-
   formatDate(date) {
-    const currentDate = new Date(date);
-
-    const options: any = {
-      // weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      // hour: '2-digit',
-      // minute: '2-digit',
-      // second: '2-digit',
-      // hour12: false, // Use 24-hour format
-      timeZone: 'Asia/Jakarta', // Set the time zone to Indonesia (Jakarta)
-    };
-
-    const formattedDate = currentDate.toLocaleString('id-ID', options);
-    return formattedDate;
+    return moment(date).format('DD-MM-YYYY');
   }
 }

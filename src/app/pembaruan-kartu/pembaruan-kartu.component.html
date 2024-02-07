@@ -1,0 +1,316 @@
+<app-header></app-header>
+<div class="wrapper">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="content">
+      <div class="my-4">
+        <h3>Form Update Kartu Digital</h3>
+        <p>Lengkapi data berikut untuk membuat kartu digital</p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-8 mb-3">
+          <div class="card-border mb-3">
+            <h3>Data Organisasi</h3>
+            <p>Isi data organisasi anda:</p>
+
+            <form [formGroup]="organisasiForm" class="form">
+              <div class="row">
+                <div class="col-lg-8">
+                  <div class="form-group">
+                    <label for="nama_ketua">Nama Ketua Organisasi</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="nama_ketua"
+                      placeholder="Nama Ketua"
+                      formControlName="nama_ketua"
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="telp_ketua">No Telp. Ketua</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="telp_ketua"
+                      placeholder="No Telp. Ketua"
+                      formControlName="no_telp_ketua"
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="form-group">
+                    <label for="nama">Nama Organisasi</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="Nama"
+                      placeholder="Nama"
+                      formControlName="nama"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="tanggal-berdiri">Tanggal Berdiri</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="tanggal-berdiri"
+                      formControlName="tanggal_berdiri"
+                      placeholder="Tanggal Berdiri"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="jenis_kesenian">Jenis Kesenian</label>
+                    <select
+                      name="jenis_kesenian"
+                      id="jenis_kesenian"
+                      class="form-control"
+                      formControlName="jenis_kesenian"
+                      (change)="selectJenisKesenian()"
+                    >
+                      <option value="">Pilih</option>
+                      <option
+                        [value]="item.id"
+                        *ngFor="let item of jenisKesenian"
+                      >
+                        {{ item.nama }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="sub_kesenian">Sub Kesenian</label>
+                    <select
+                      name="sub_kesenian"
+                      id="sub_kesenian"
+                      class="form-control"
+                      formControlName="sub_kesenian"
+                    >
+                      <option value="">Pilih</option>
+                      <option
+                        [value]="item.id"
+                        *ngFor="let item of subKesenian"
+                      >
+                        {{ item.nama }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="jumlah_anggota">Jumlah Anggota</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="jumlah_anggota"
+                      placeholder="Jumlah Anggota"
+                      formControlName="jumlah_anggota"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-lg-12 general">
+                  <hr />
+                  <br />
+
+                  <p class="sub">Alamat Sekretariat Organisasi</p>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="kabupaten">Kabupaten</label>
+                    <select
+                      name="kabupaten"
+                      id="kabupaten"
+                      class="form-control"
+                      formControlName="kabupaten"
+                    >
+                      <option value="Banyuwangi">Banyuwangi</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="kecamatan">Kecamatan</label>
+                    <select
+                      name="kecamatan"
+                      id="kecamatan"
+                      class="form-control"
+                      (change)="getDesa()"
+                      formControlName="kecamatan"
+                    >
+                      <ng-container *ngFor="let item of kecamatanList">
+                        <option [value]="item.kode">{{ item.nama }}</option>
+                      </ng-container>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="desa">Desa</label>
+                    <select
+                      name="desa"
+                      id="desa"
+                      class="form-control"
+                      formControlName="desa"
+                    >
+                      <ng-container *ngFor="let item of desaList">
+                        <option [value]="item.kode">{{ item.nama }}</option>
+                      </ng-container>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="alamat">Alamat detail</label>
+                    <textarea
+                      class="form-control"
+                      name="alamat"
+                      id="alamat"
+                      cols="30"
+                      rows="5"
+                      formControlName="alamat"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="card-border" *ngIf="organisasi">
+            <h3>Upload data pendukung</h3>
+
+            <div class="row mb-3">
+              <div class="col-lg-12 mb-4">
+                <div class="form-group mb-0">
+                  <label for="fotoKTP">
+                    Foto KTP <span class="text-danger">*</span>
+                  </label>
+                </div>
+
+                <div class="container-upload">
+                  <ng-container *ngIf="!fotoKTPPreview">
+                    <input
+                      type="file"
+                      id="fotoKTP"
+                      accept="image/*"
+                      (change)="onFileSelectedFotoKTP($event)"
+                      #fotoKTP
+                    />
+                    <img
+                      class="mt-4 mb-3"
+                      src="/assets/img/upload-image-icon.svg"
+                      alt=""
+                    />
+
+                    <div class="d-flex justify-content-center">
+                      <h3>
+                        Click to upload
+                        <span>or drag and drop SVG, PNG or JPG</span>
+                      </h3>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="fotoKTPPreview">
+                    <div class="relative">
+                      <img
+                        class="img-upload"
+                        [src]="fotoKTPPreview"
+                        alt="image"
+                      />
+                      <fa-icon
+                        (click)="deleteImage('KTP')"
+                        class="icon-delete"
+                        [icon]="faTimes"
+                      ></fa-icon>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-lg-12 mb-4">
+                <div class="form-group mb-0">
+                  <label for="pasFoto">
+                    PAS FOTO <span class="text-danger">*</span>
+                  </label>
+                </div>
+
+                <div class="container-upload">
+                  <ng-container *ngIf="!pasFotoPreview">
+                    <input
+                      type="file"
+                      id="pasFoto"
+                      accept="image/*"
+                      (change)="onFileSelectedPasFoto($event)"
+                      #pasFoto
+                    />
+                    <img
+                      class="mt-4 mb-3"
+                      src="/assets/img/upload-image-icon.svg"
+                      alt=""
+                    />
+
+                    <div class="d-flex justify-content-center">
+                      <h3>
+                        Click to upload
+                        <span>or drag and drop SVG, PNG or JPG</span>
+                      </h3>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="pasFotoPreview">
+                    <div class="relative">
+                      <img
+                        class="img-upload"
+                        [src]="pasFotoPreview"
+                        alt="image"
+                      />
+                      <fa-icon
+                        (click)="deleteImage('PAS-FOTO')"
+                        class="icon-delete"
+                        [icon]="faTimes"
+                      ></fa-icon>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <button
+                [disabled]="!pasFotoPreview || !fotoKTPPreview"
+                class="btn btn-info margin-auto"
+                (click)="saveStatusPendaftaran()"
+              >
+                <span> Generate Kartu</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<canvas #qrcode style="display: none"></canvas>
+
+<ng-container *ngIf="isLoading">
+  <div class="spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-container>

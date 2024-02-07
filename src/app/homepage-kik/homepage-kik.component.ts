@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewImageComponent } from '../utils/preview-image/preview-image.component';
 import { PreviewKartuComponent } from '../utils/preview-kartu/preview-kartu.component';
+import { ModalCheckKartuComponent } from './modal-check-kartu/modal-check-kartu.component';
 
 @Component({
   selector: 'app-homepage-kik',
@@ -77,6 +78,12 @@ export class HomepageKikComponent implements OnInit {
 
           if (this.organisasi && !this.organisasi.status) {
             this.router.navigateByUrl('/registrasi');
+          } else if (
+            this.organisasi &&
+            this.organisasi.status == 'DataLama' &&
+            this.organisasi.user_id
+          ) {
+            this.router.navigateByUrl('/pembaruan-kartu');
           } else {
             this.apiService
               .getVerifikasi(this.organisasi.id)
@@ -163,5 +170,19 @@ export class HomepageKikComponent implements OnInit {
       size: 'lg',
     });
     modalRef.componentInstance.dataOrganisasi = data;
+  }
+
+  checkKartu() {
+    const modalRef = this.modalService.open(ModalCheckKartuComponent, {
+      centered: true,
+      size: 'lg',
+    });
+    modalRef.componentInstance.type = 'Check Kartu';
+
+    modalRef.componentInstance.emitModal.subscribe((res: any) => {
+      if (res) {
+        console.log(res);
+      }
+    });
   }
 }
