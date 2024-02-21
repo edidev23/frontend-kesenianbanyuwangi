@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8015/api/',
-  url: 'http://localhost:8015/',
+  apiUrl: 'https://api.kesenianbanyuwangi.com/api/',
+  url: 'https://api.kesenianbanyuwangi.com/',
 };
 
 /*

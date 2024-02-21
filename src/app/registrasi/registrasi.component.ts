@@ -123,6 +123,10 @@ export class RegistrasiComponent implements OnInit {
     this.apiService.getJenisKesenian().subscribe((res) => {
       if (res) {
         this.jenisKesenian = res;
+
+        if (this.kecamatanList) {
+          this.getOrganisasi();
+        }
       }
     });
 
@@ -131,10 +135,12 @@ export class RegistrasiComponent implements OnInit {
     this.apiService.getWilayah(id_wilayah).subscribe((res: any) => {
       if (res) {
         this.kecamatanList = res.data;
+
+        if (this.jenisKesenian) {
+          this.getOrganisasi();
+        }
       }
     });
-
-    this.getOrganisasi();
   }
 
   getDesa() {
@@ -348,6 +354,11 @@ export class RegistrasiComponent implements OnInit {
 
   updateStatus() {
     this.isLoading = true;
+    if (this.userList && this.userList.length) {
+      this.organisasiForm.controls.jumlah_anggota.setValue(
+        this.userList.length
+      );
+    }
     let data = this.organisasiForm.value;
     // data.status = 'Request';
     this.apiService.saveOrganisasi(data).subscribe((res) => {
@@ -505,14 +516,16 @@ export class RegistrasiComponent implements OnInit {
           this.isLoading = false;
         }
 
+        const timestamp = new Date().getTime();
+
         this.listDocuments.map((item) => {
           let linkImage = `${environment.url}uploads/organisasi/${item.organisasi_id}`;
           if (item.tipe == 'KTP') {
-            this.fotoKTPPreview = `${linkImage}/${item.image}`;
+            this.fotoKTPPreview = `${linkImage}/${item.image}?t=${timestamp}`;
           } else if (item.tipe == 'PAS-FOTO') {
-            this.pasFotoPreview = `${linkImage}/${item.image}`;
+            this.pasFotoPreview = `${linkImage}/${item.image}?t=${timestamp}`;
           } else if (item.tipe == 'BANNER') {
-            this.bannerPreview = `${linkImage}/${item.image}`;
+            this.bannerPreview = `${linkImage}/${item.image}?t=${timestamp}`;
           }
         });
 
@@ -590,7 +603,7 @@ export class RegistrasiComponent implements OnInit {
       );
 
       if (checkKetua && checkSekretaris) {
-        return this.userList.length ==
+        return this.userList.length >=
           this.organisasiForm.controls.jumlah_anggota.value
           ? false
           : true;

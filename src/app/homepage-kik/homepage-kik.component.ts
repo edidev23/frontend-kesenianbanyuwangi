@@ -106,10 +106,11 @@ export class HomepageKikComponent implements OnInit {
 
   getFotoKetua() {
     if (this.dataDocuments) {
+      const timestamp = new Date().getTime();
       let pasfoto = this.dataDocuments.find((d) => d.tipe == 'PAS-FOTO');
 
       if (pasfoto) {
-        return `${environment.url}uploads/organisasi/${pasfoto.organisasi_id}/${pasfoto.image}`;
+        return `${environment.url}uploads/organisasi/${pasfoto.organisasi_id}/${pasfoto.image}?t=${timestamp}`;
       } else {
         return '';
       }

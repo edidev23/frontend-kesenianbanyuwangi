@@ -615,6 +615,7 @@ export class VerifikasiComponent implements OnInit {
   }
 
   saveStatusPendaftaran() {
+    console.log(this.tanggal_cetak_kartu);
     this.isLoading = true;
     let data = {
       organisasi_id: this.organisasi.id,
@@ -801,7 +802,7 @@ export class VerifikasiComponent implements OnInit {
           this.organisasi = res.data;
           this.getAnggota(this.organisasi.id);
 
-          this.generateDate(this.organisasi.tanggal_cetak_kartu);
+          this.generateDate(this.organisasi.tanggal_daftar);
 
           let dataOrganisasi = res.data;
 
@@ -895,16 +896,18 @@ export class VerifikasiComponent implements OnInit {
           this.isLoading = false;
         }
 
+        const timestamp = new Date().getTime();
+
         this.listDocuments.map(async (item) => {
           let linkImage = `${environment.url}uploads/organisasi/${item.organisasi_id}`;
           if (item.tipe == 'KTP') {
-            this.fotoKTPPreview = `${linkImage}/${item.image}`;
+            this.fotoKTPPreview = `${linkImage}/${item.image}?t=${timestamp}`;
           } else if (item.tipe == 'PAS-FOTO') {
             await this.getImageBase64(
               `uploads/organisasi/${item.organisasi_id}/${item.image}`
             );
           } else if (item.tipe == 'BANNER') {
-            this.bannerPreview = `${linkImage}/${item.image}`;
+            this.bannerPreview = `${linkImage}/${item.image}?t=${timestamp}`;
           }
         });
 

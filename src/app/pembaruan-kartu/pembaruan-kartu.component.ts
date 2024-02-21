@@ -87,6 +87,10 @@ export class PembaruanKartuComponent implements OnInit {
     this.apiService.getJenisKesenian().subscribe((res) => {
       if (res) {
         this.jenisKesenian = res;
+
+        if (this.kecamatanList) {
+          this.getOrganisasi();
+        }
       }
     });
 
@@ -95,10 +99,12 @@ export class PembaruanKartuComponent implements OnInit {
     this.apiService.getWilayah(id_wilayah).subscribe((res: any) => {
       if (res) {
         this.kecamatanList = res.data;
+
+        if (this.jenisKesenian) {
+          this.getOrganisasi();
+        }
       }
     });
-
-    this.getOrganisasi();
   }
 
   saveStatusPendaftaran() {
